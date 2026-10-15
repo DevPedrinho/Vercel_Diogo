@@ -5,8 +5,8 @@ convite: papel creme, azul-marinho dos nomes, filetes dourados, aquarela azul
 nos cantos e o selo de cera **V | D**.
 
 Mesma base do site da Deysiane & Pedro (Next.js + Supabase + Tailwind), mas
-com um painel enxuto: os noivos cuidam **só dos presentes, da música e dos
-textos do site**. Não há cadastro de convidado — o site é aberto.
+com um painel enxuto: os noivos cuidam **dos presentes, da música, dos textos,
+da linha do tempo e dos padrinhos**. Não há cadastro de convidado — o site é aberto.
 
 ## Páginas
 
