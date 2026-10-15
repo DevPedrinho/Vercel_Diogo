@@ -8,6 +8,8 @@ import { Icone, type NomeIcone } from "@/components/Icones";
 const ITENS: { href: string; rotulo: string; icone: NomeIcone }[] = [
   { href: "/admin", rotulo: "Início", icone: "casa" },
   { href: "/admin/presentes", rotulo: "Presentes", icone: "presente" },
+  { href: "/admin/historia", rotulo: "História", icone: "coracao" },
+  { href: "/admin/padrinhos", rotulo: "Padrinhos", icone: "pessoas" },
   { href: "/admin/musica", rotulo: "Música", icone: "musica" },
   { href: "/admin/textos", rotulo: "Textos", icone: "texto" },
 ];
@@ -34,12 +36,12 @@ export function BarraAdmin({ email, demo }: { email: string; demo: boolean }) {
           <span className="versalete ml-2 hidden text-[0.7rem] text-papel/70 sm:inline">Painel</span>
         </Link>
 
-        <nav className="ml-auto hidden items-center gap-1 md:flex">
+        <nav className="ml-auto hidden items-center gap-0.5 lg:flex">
           {ITENS.map((i) => (
             <Link
               key={i.href}
               href={i.href}
-              className={`flex min-h-11 items-center gap-2 rounded-sm px-3.5 text-base transition-colors ${
+              className={`flex min-h-11 items-center gap-2 rounded-sm px-3 text-base transition-colors ${
                 ativo(i.href) ? "bg-papel-claro/15 text-papel-claro" : "text-papel/75 hover:text-papel-claro"
               }`}
             >
@@ -49,7 +51,7 @@ export function BarraAdmin({ email, demo }: { email: string; demo: boolean }) {
           ))}
         </nav>
 
-        <div className="ml-auto flex items-center gap-1 md:ml-4">
+        <div className="ml-auto flex items-center gap-1 lg:ml-3">
           <Link
             href="/"
             target="_blank"
@@ -72,7 +74,7 @@ export function BarraAdmin({ email, demo }: { email: string; demo: boolean }) {
       </div>
 
       {/* No celular os módulos descem para uma faixa própria. */}
-      <nav className="grid grid-cols-4 border-t border-papel/10 md:hidden">
+      <nav className="grid grid-cols-6 border-t border-papel/10 lg:hidden">
         {ITENS.map((i) => (
           <Link
             key={i.href}

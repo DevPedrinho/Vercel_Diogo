@@ -1,16 +1,18 @@
 import Link from "next/link";
-import { carregarCasamento, carregarMusica, carregarPresentes } from "@/lib/conteudo";
+import { carregarCasamento, carregarHistoria, carregarMusica, carregarPadrinhos, carregarPresentes } from "@/lib/conteudo";
 import { carregarRecados } from "@/lib/admin";
 import { formatarDataHora } from "@/lib/formato";
 import { TituloPagina } from "@/components/Formulario";
 import { Icone, type NomeIcone } from "@/components/Icones";
 
 export default async function PainelInicio() {
-  const [c, presentes, musica, recados] = await Promise.all([
+  const [c, presentes, musica, recados, historia, padrinhos] = await Promise.all([
     carregarCasamento(),
     carregarPresentes({ todos: true }),
     carregarMusica(),
     carregarRecados(5),
+    carregarHistoria(),
+    carregarPadrinhos(),
   ]);
   const ativos = presentes.filter((p) => p.is_active).length;
   const dias = Math.max(0, Math.ceil((new Date(c.dataISO).getTime() - Date.now()) / 86_400_000));
@@ -25,6 +27,20 @@ export default async function PainelInicio() {
       texto: `${ativos === 1 ? "item visível" : "itens visíveis"} na lista${presentes.length > ativos ? ` · ${presentes.length - ativos} oculto(s)` : ""}`,
     },
     {
+      href: "/admin/historia",
+      icone: "coracao",
+      titulo: "Nossa história",
+      numero: String(historia.length),
+      texto: historia.length === 1 ? "capítulo na linha do tempo" : "capítulos na linha do tempo",
+    },
+    {
+      href: "/admin/padrinhos",
+      icone: "pessoas",
+      titulo: "Padrinhos",
+      numero: String(padrinhos.length),
+      texto: `${padrinhos.filter((p) => p.side === "noiva").length} da noiva · ${padrinhos.filter((p) => p.side === "noivo").length} do noivo`,
+    },
+    {
       href: "/admin/musica",
       icone: "musica",
       titulo: "Música",
@@ -36,7 +52,7 @@ export default async function PainelInicio() {
       icone: "texto",
       titulo: "Textos do site",
       numero: "Aa",
-      texto: "Nomes, data, locais, convite e história",
+      texto: "Nomes, data, locais, convite, dress code",
     },
   ];
 
@@ -44,7 +60,7 @@ export default async function PainelInicio() {
     <>
       <TituloPagina sobretitulo={`${c.noiva} & ${c.noivo}`} titulo="Olá, noivos!">
         Faltam <strong className="font-medium text-marinho">{dias} dias</strong> para {c.dataExtenso}. Daqui vocês
-        cuidam dos presentes, da música e dos textos do site.
+        cuidam de tudo o que aparece no site.
       </TituloPagina>
 
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">

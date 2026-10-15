@@ -152,9 +152,96 @@ body {
   opacity: 0;
   transform: translateY(1.25rem);
 }
+.js-ativo .revelar.revelar-esquerda {
+  transform: translateX(-2rem);
+}
+.js-ativo .revelar.revelar-direita {
+  transform: translateX(2rem);
+}
 .js-ativo .revelar.revelado {
   opacity: 1;
   transform: none;
+}
+
+/* Algarismo da contagem caindo no lugar quando muda. */
+@keyframes virar {
+  from {
+    opacity: 0.15;
+    transform: translateY(-0.5em) rotateX(70deg);
+    filter: blur(1.5px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+.virar {
+  animation: virar 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* A capa chegando aos poucos: cada filho de .entrada aparece depois do anterior. */
+@keyframes subir {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.entrada > * {
+  animation: subir 1s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.entrada > *:nth-child(2) { animation-delay: 0.15s; }
+.entrada > *:nth-child(3) { animation-delay: 0.3s; }
+.entrada > *:nth-child(4) { animation-delay: 0.5s; }
+.entrada > *:nth-child(5) { animation-delay: 0.65s; }
+.entrada > *:nth-child(6) { animation-delay: 0.8s; }
+.entrada > *:nth-child(7) { animation-delay: 0.95s; }
+.entrada > *:nth-child(8) { animation-delay: 1.1s; }
+.entrada > *:nth-child(n + 9) { animation-delay: 1.25s; }
+
+/* A aquarela "chega" ao abrir a página, como tinta espalhando no papel. */
+@keyframes tingir {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.tingir {
+  animation: tingir 1.8s ease-out both;
+}
+
+/* Raminho balançando de leve, como ao vento. */
+@keyframes balancar {
+  0%,
+  100% {
+    transform: rotate(-2deg);
+  }
+  50% {
+    transform: rotate(2.5deg);
+  }
+}
+.balancar {
+  transform-origin: 0% 100%;
+  animation: balancar 7s ease-in-out infinite;
+}
+
+/* Coração do divisor batendo devagar. */
+@keyframes bater {
+  0%, 70%, 100% { transform: scale(1); }
+  78% { transform: scale(1.25); }
+  86% { transform: scale(1); }
+  92% { transform: scale(1.15); }
+}
+.bater {
+  animation: bater 2.8s ease-in-out infinite;
 }
 
 /* Halo que "respira" em volta do botão de música enquanto toca. */
@@ -203,7 +290,9 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-  .js-ativo .revelar {
+  .js-ativo .revelar,
+  .js-ativo .revelar.revelar-esquerda,
+  .js-ativo .revelar.revelar-direita {
     opacity: 1;
     transform: none;
   }

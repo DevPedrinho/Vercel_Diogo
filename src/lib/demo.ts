@@ -1,4 +1,4 @@
-import type { MusicaDoSite, Presente } from "@/lib/tipos";
+import type { EventoHistoria, MusicaDoSite, Padrinho, Presente } from "@/lib/tipos";
 
 /**
  * O que o site mostra enquanto o Supabase não está ligado: presentes de
@@ -45,3 +45,43 @@ export const MUSICA_DEMO: MusicaDoSite = {
 
 /** Arquivo servido de /public enquanto não há música enviada pelo painel. */
 export const ARQUIVO_MUSICA_DEMO = "/audio/melodia-de-teste.wav";
+
+/* Capítulos de exemplo: mostram o formato da linha do tempo até os noivos
+   escreverem a história deles no painel. */
+const capitulo = (n: number, title: string, date_label: string, description: string): EventoHistoria => ({
+  id: `demo-h${n}`,
+  title,
+  date_label,
+  description,
+  image_path: null,
+  sort_order: n,
+  created_at: "2026-10-15T12:00:00Z",
+});
+
+export const HISTORIA_DEMO: EventoHistoria[] = [
+  capitulo(1, "Onde tudo começou", "O primeiro olhar", "Aqui entra como vocês se conheceram — o lugar, o dia, quem apresentou quem."),
+  capitulo(2, "O primeiro encontro", "Os primeiros passos", "Conte do primeiro encontro: onde foi, o que comeram, quem ficou mais nervoso."),
+  capitulo(3, "Namoro", "Lado a lado", "As viagens, as manias, as fotos favoritas: os momentos que fizeram vocês terem certeza."),
+  capitulo(4, "O pedido", "Sim!", "Como foi o pedido — e se alguém chorou (provavelmente sim)."),
+  capitulo(5, "O grande dia", "16 de janeiro de 2027", "Diante de Deus e de quem amamos, o capítulo mais bonito começa — e você está nele."),
+];
+
+const padrinho = (n: number, name: string, role: string, side: "noiva" | "noivo"): Padrinho => ({
+  id: `demo-p${n}`,
+  name,
+  role,
+  side,
+  description: null,
+  image_path: null,
+  sort_order: n,
+  created_at: "2026-10-15T12:00:00Z",
+});
+
+export const PADRINHOS_DEMO: Padrinho[] = [
+  padrinho(1, "Madrinha & Padrinho", "Padrinhos", "noiva"),
+  padrinho(2, "Madrinha & Padrinho", "Padrinhos", "noiva"),
+  padrinho(3, "Madrinha & Padrinho", "Padrinhos", "noiva"),
+  padrinho(4, "Madrinha & Padrinho", "Padrinhos", "noivo"),
+  padrinho(5, "Madrinha & Padrinho", "Padrinhos", "noivo"),
+  padrinho(6, "Madrinha & Padrinho", "Padrinhos", "noivo"),
+];

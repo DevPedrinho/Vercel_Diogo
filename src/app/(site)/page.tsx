@@ -1,5 +1,8 @@
 import Image from "next/image";
-import { carregarCasamento } from "@/lib/conteudo";
+import { carregarCasamento, carregarPadrinhos } from "@/lib/conteudo";
+import { DressCode } from "@/components/DressCode";
+import { CartaoPadrinho } from "@/components/CartaoPadrinho";
+import { Revelar } from "@/components/Revelar";
 import { Secao } from "@/components/Secao";
 import { BotaoExterno, BotaoLink } from "@/components/Botao";
 import { Contagem } from "@/components/Contagem";
@@ -24,7 +27,7 @@ function linhas(texto: string) {
 }
 
 export default async function Inicio() {
-  const c = await carregarCasamento();
+  const [c, padrinhos] = await Promise.all([carregarCasamento(), carregarPadrinhos()]);
   const iniciais: [string, string] = [c.noiva[0] ?? "V", c.noivo[0] ?? "D"];
   const [primeiraPalavra, ...resto] = c.capa_sobretitulo.trim().split(/\s+/);
   // "Save the date" vira SAVE / the / DATE, como no save the date impresso.
@@ -34,13 +37,15 @@ export default async function Inicio() {
     <>
       {/* ---------- Capa: o save the date ---------- */}
       <section className="papel relative flex min-h-svh items-center justify-center overflow-hidden px-6 pt-24 pb-20">
-        <Aquarela id="aq-capa-1" className="pointer-events-none absolute -top-4 -right-4 w-[62vw] max-w-[540px]" />
-        <Aquarela id="aq-capa-2" canto="base-esquerda" className="pointer-events-none absolute -bottom-4 -left-4 w-[58vw] max-w-[500px]" />
-        <Ramo className="pointer-events-none absolute top-16 left-0 w-28 sm:top-20 sm:w-48" />
+        <Aquarela id="aq-capa-1" className="tingir pointer-events-none absolute -top-4 -right-4 w-[62vw] max-w-[540px]" />
+        <Aquarela id="aq-capa-2" canto="base-esquerda" className="tingir pointer-events-none absolute -bottom-4 -left-4 w-[58vw] max-w-[500px]" />
+        <div className="balancar pointer-events-none absolute top-16 left-0 w-28 sm:top-20 sm:w-48">
+          <Ramo />
+        </div>
         <Ramo espelhado className="pointer-events-none absolute right-2 bottom-24 hidden w-40 rotate-180 sm:block" />
         <Moldura className="sm:inset-8" />
 
-        <div className="relative mx-auto max-w-2xl text-center">
+        <div className="entrada relative mx-auto max-w-2xl text-center">
           {capaEmTres ? (
             <h1 className="titulo-serif text-marinho">
               <span className="block text-5xl tracking-[0.32em] sm:text-7xl">{primeiraPalavra.toUpperCase()}</span>
@@ -62,7 +67,7 @@ export default async function Inicio() {
           />
 
           <p className="script -mt-6 text-7xl leading-none text-marinho sm:-mt-10 sm:text-8xl">{c.noiva}</p>
-          <Coracao cheio className="mx-auto my-1 w-4 text-ouro" />
+          <Coracao cheio className="bater mx-auto my-1 w-4 text-ouro" />
           <p className="script text-7xl leading-none text-marinho sm:text-8xl">{c.noivo}</p>
 
           <p className="titulo-serif mt-6 text-3xl tracking-[0.2em] text-ouro-escuro tabular-nums lining-nums sm:text-4xl">
@@ -207,8 +212,38 @@ export default async function Inicio() {
               </p>
             ))}
         </div>
-        <Ramo className="mx-auto mt-10 w-28 opacity-80" />
+        <div className="mt-10 text-center">
+          <BotaoLink href="/nossa-historia" variante="contorno">
+            Ver nossa linha do tempo
+          </BotaoLink>
+        </div>
       </Secao>
+
+      {/* ---------- Dress code ---------- */}
+      <Secao id="dress-code" fundo="claro" sobretitulo="O que vestir" titulo="Dress code">
+        <DressCode c={c} />
+      </Secao>
+
+      {/* ---------- Padrinhos ---------- */}
+      {padrinhos.length > 0 && (
+        <Secao id="padrinhos" sobretitulo="Ao nosso lado no altar" titulo={c.padrinhos_titulo}>
+          <p className="mx-auto -mt-4 mb-12 max-w-xl text-center text-lg text-marinho">{c.padrinhos_intro}</p>
+          <ul className="grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3">
+            {padrinhos.slice(0, 6).map((p, i) => (
+              <li key={p.id}>
+                <Revelar atraso={(i % 3) * 120}>
+                  <CartaoPadrinho p={p} />
+                </Revelar>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-12 text-center">
+            <BotaoLink href="/padrinhos" variante="contorno">
+              {padrinhos.length > 6 ? `Ver todos os ${padrinhos.length}` : "Conhecer os padrinhos"}
+            </BotaoLink>
+          </div>
+        </Secao>
+      )}
 
       {/* ---------- A bênção (o verso e o forro do envelope) ---------- */}
       <Secao fundo="azul">

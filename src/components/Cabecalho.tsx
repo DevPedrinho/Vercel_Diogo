@@ -6,7 +6,9 @@ import { useEffect, useState } from "react";
 
 const LINKS = [
   { href: "/#convite", rotulo: "Convite" },
-  { href: "/#historia", rotulo: "Nossa história" },
+  { href: "/nossa-historia", rotulo: "Nossa história" },
+  { href: "/padrinhos", rotulo: "Padrinhos" },
+  { href: "/#dress-code", rotulo: "Dress code" },
   { href: "/#locais", rotulo: "Local" },
   { href: "/presentes", rotulo: "Presentes" },
 ];
@@ -37,7 +39,7 @@ export function Cabecalho({ iniciais }: { iniciais: [string, string] }) {
           <span>{iniciais[1]}</span>
         </Link>
 
-        <ul className="hidden items-center gap-8 md:flex">
+        <ul className="hidden items-center gap-6 lg:flex">
           {LINKS.map((l) => (
             <li key={l.href}>
               <Link
@@ -57,7 +59,7 @@ export function Cabecalho({ iniciais }: { iniciais: [string, string] }) {
           onClick={() => setAberto((a) => !a)}
           aria-expanded={aberto}
           aria-label={aberto ? "Fechar menu" : "Abrir menu"}
-          className="flex h-11 w-11 items-center justify-center text-marinho md:hidden"
+          className="flex h-11 w-11 items-center justify-center text-marinho lg:hidden"
         >
           <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="1.4">
             {aberto ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 8h16M4 16h16" />}
@@ -66,7 +68,7 @@ export function Cabecalho({ iniciais }: { iniciais: [string, string] }) {
       </nav>
 
       {aberto && (
-        <ul className="border-t border-ouro/20 px-5 pb-5 md:hidden">
+        <ul className="border-t border-ouro/20 px-5 pb-5 lg:hidden">
           {LINKS.map((l) => (
             <li key={l.href}>
               <Link

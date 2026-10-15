@@ -3,8 +3,8 @@ import { criarClienteServidor } from "@/lib/supabase/servidor";
 import { supabaseConfigurado } from "@/lib/supabase/ativo";
 import { urlDoSite } from "@/lib/storage";
 import { completarTextos, type Textos } from "@/lib/textos";
-import { ARQUIVO_MUSICA_DEMO, MUSICA_DEMO, PRESENTES_DEMO } from "@/lib/demo";
-import type { MusicaDoSite, Presente } from "@/lib/tipos";
+import { ARQUIVO_MUSICA_DEMO, HISTORIA_DEMO, MUSICA_DEMO, PADRINHOS_DEMO, PRESENTES_DEMO } from "@/lib/demo";
+import type { EventoHistoria, MusicaDoSite, Padrinho, Presente } from "@/lib/tipos";
 
 /**
  * Leitura do conteúdo do site no servidor. Nenhuma função daqui lança:
@@ -99,6 +99,25 @@ export async function carregarPresentes({ todos = false } = {}): Promise<Present
     return [];
   }
 }
+
+/** Lista ordenada de uma tabela do painel; demonstração sem Supabase. */
+async function carregarLista<T>(tabela: string, demo: T[]): Promise<T[]> {
+  if (!supabaseConfigurado) return demo;
+  try {
+    const supabase = await criarClienteServidor();
+    const { data } = await supabase
+      .from(tabela)
+      .select("*")
+      .order("sort_order", { ascending: true })
+      .order("created_at", { ascending: true });
+    return (data ?? []) as T[];
+  } catch {
+    return [];
+  }
+}
+
+export const carregarHistoria = () => carregarLista<EventoHistoria>("story_events", HISTORIA_DEMO);
+export const carregarPadrinhos = () => carregarLista<Padrinho>("godparents", PADRINHOS_DEMO);
 
 export async function carregarMusica(): Promise<MusicaDoSite> {
   if (!supabaseConfigurado) return MUSICA_DEMO;

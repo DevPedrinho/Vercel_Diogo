@@ -28,3 +28,26 @@ export type MusicaDoSite = {
   enabled: boolean;
   volume: number;
 };
+
+/** Um capítulo da linha do tempo da nossa história. */
+export type EventoHistoria = {
+  id: string;
+  title: string;
+  date_label: string | null;
+  description: string | null;
+  image_path: string | null;
+  sort_order: number;
+  created_at: string;
+};
+
+/** Um padrinho, uma madrinha ou um casal de padrinhos. */
+export type Padrinho = {
+  id: string;
+  name: string;
+  role: string;
+  side: "noiva" | "noivo";
+  description: string | null;
+  image_path: string | null;
+  sort_order: number;
+  created_at: string;
+};

@@ -129,6 +129,73 @@ export const GRUPOS: GrupoTextos[] = [
     ],
   },
   {
+    id: "historia",
+    titulo: "Nossa história",
+    descricao: "Os textos em volta da linha do tempo. Os capítulos em si ficam em Painel → História.",
+    campos: [
+      { chave: "historia_linha_titulo", rotulo: "Título da página", padrao: "Nossa história" },
+      {
+        chave: "historia_linha_intro",
+        rotulo: "Abertura da página",
+        tipo: "paragrafo",
+        padrao: "Cada capítulo que nos trouxe até aqui — e o mais bonito ainda está por vir.",
+      },
+    ],
+  },
+  {
+    id: "dress-code",
+    titulo: "Dress code",
+    descricao: "O traje e a paleta sugerida para os convidados.",
+    campos: [
+      { chave: "traje", rotulo: "Traje", padrao: "Esporte fino" },
+      {
+        chave: "dress_texto",
+        rotulo: "Texto de abertura",
+        tipo: "paragrafo",
+        padrao:
+          "Queremos todo mundo elegante e confortável para celebrar com a gente — a festa vai até tarde e o calor de Fortaleza não tira folga.",
+      },
+      {
+        chave: "dress_cores",
+        rotulo: "Paleta sugerida",
+        tipo: "paragrafo",
+        padrao: "Azul sereno | #a9b9ca\nAzul empoeirado | #5b7189\nAreia | #e3d5bf\nDourado suave | #c8ab7a\nVerde sálvia | #a7b39b",
+        ajuda: "Uma cor por linha: nome | código da cor. Ex.: Azul sereno | #a9b9ca",
+      },
+      {
+        chave: "dress_elas",
+        rotulo: "Para elas",
+        tipo: "paragrafo",
+        padrao: "Vestidos midi ou longos, em tecidos leves. A cerimônia é numa capela: prefira ombros cobertos ou um xale.",
+      },
+      {
+        chave: "dress_eles",
+        rotulo: "Para eles",
+        tipo: "paragrafo",
+        padrao: "Calça social, camisa de botão e sapato. Blazer é bem-vindo; gravata, opcional.",
+      },
+      {
+        chave: "dress_evitar",
+        rotulo: "Evitar",
+        padrao: "Branco, off-white e tons muito claros — essas cores são da noiva.",
+      },
+    ],
+  },
+  {
+    id: "padrinhos",
+    titulo: "Padrinhos e madrinhas",
+    descricao: "Os textos da página. Os nomes e fotos ficam em Painel → Padrinhos.",
+    campos: [
+      { chave: "padrinhos_titulo", rotulo: "Título", padrao: "Padrinhos e madrinhas" },
+      {
+        chave: "padrinhos_intro",
+        rotulo: "Texto de abertura",
+        tipo: "paragrafo",
+        padrao: "Pessoas que caminham com a gente há tempos e que escolhemos para estar ao nosso lado no altar.",
+      },
+    ],
+  },
+  {
     id: "presentes",
     titulo: "Lista de presentes",
     descricao: "O que aparece em cima da lista e no agradecimento.",

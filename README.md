@@ -12,13 +12,17 @@ textos do site**. Não há cadastro de convidado — o site é aberto.
 
 | Página | Endereço | O que faz |
 | --- | --- | --- |
-| Início | `/` | Save the date, contagem regressiva, o convite, locais com mapa, nossa história e a bênção |
+| Início | `/` | Save the date animado, contagem regressiva com anéis, o convite, locais com mapa, nossa história, dress code com paleta, padrinhos e a bênção |
+| Nossa história | `/nossa-historia` | Linha do tempo com capítulos, datas e fotos em moldura de arco |
+| Padrinhos | `/padrinhos` | Padrinhos e madrinhas separados pelo lado da noiva e do noivo |
 | Presentes | `/presentes` | Lista com filtro por categoria; o botão **Presentear** abre o link de pagamento e pede nome e recado (opcional) |
 | Entrar | `/entrar` | Login dos noivos |
 | Painel | `/admin` | Resumo e últimos recados |
 | Presentes (painel) | `/admin/presentes` | Adicionar, editar, ocultar, reordenar e remover presentes; ler e apagar recados |
+| História (painel) | `/admin/historia` | Capítulos da linha do tempo: título, quando, texto e foto, com ordem |
+| Padrinhos (painel) | `/admin/padrinhos` | Nome, papel, lado do altar, frase e foto, com ordem |
 | Música (painel) | `/admin/musica` | Enviar o MP3, nome e artista, volume e liga/desliga |
-| Textos (painel) | `/admin/textos` | Nomes, pais, data e hora, cerimônia, recepção, mapas, textos da capa, do convite, da história, da lista e do rodapé, e a ilustração da capa |
+| Textos (painel) | `/admin/textos` | Nomes, pais, data e hora, cerimônia, recepção, mapas, textos da capa, do convite, da história, do dress code (traje, paleta, dicas), dos padrinhos, da lista e do rodapé, e a ilustração da capa |
 
 A música toca numa pílula no canto da tela, em todas as páginas do site. Como
 nenhum navegador deixa tocar som antes de a pessoa encostar na tela, ela entra
@@ -32,8 +36,8 @@ para olhar — os botões de salvar avisam que falta conectar o banco.
 
 ## Colocando no ar
 
-1. **Supabase** — crie um projeto e rode `supabase/migrations/20261015120000_site_vercia_diogo.sql`
-   no SQL Editor. Ele cria as tabelas, as regras de acesso (RLS) e o bucket `site`.
+1. **Supabase** — crie um projeto e rode, em ordem, os arquivos de `supabase/migrations/`
+   no SQL Editor. Eles criam as tabelas, as regras de acesso (RLS) e o bucket `site`.
 2. **Conta dos noivos** — em *Authentication → Users → Add user*, crie o
    e-mail e a senha (marque *Auto Confirm User*). Depois, no SQL Editor:
    ```sql
