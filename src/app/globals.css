@@ -1,0 +1,210 @@
+@import "tailwindcss";
+
+/* =========================================================
+   Identidade visual — Vércia & Diogo
+   Cores amostradas do save the date, do convite e do envelope:
+   papel creme, azul-marinho dos nomes, dourado dos filetes e o
+   azul empoeirado da aquarela e do envelope.
+   ========================================================= */
+@theme {
+  --color-papel: #f6f1e9;
+  --color-papel-claro: #fbf8f3;
+  --color-papel-escuro: #ece4d7;
+
+  --color-marinho: #253a54;
+  --color-marinho-escuro: #1b2b3f;
+  --color-azul: #5b7189;
+  --color-azul-claro: #a9b9ca;
+  --color-nevoa: #dfe6ee;
+
+  /* O dourado dos filetes não passa de 3:1 sobre o papel; texto pequeno
+     usa o tom escuro, e o claro fica para linhas e enfeites. */
+  --color-ouro: #a88a5e;
+  --color-ouro-escuro: #7c6141;
+
+  --font-titulo: var(--fonte-titulo);
+  --font-corpo: var(--fonte-corpo);
+  --font-script: var(--fonte-script);
+
+  /* Um degrau acima do padrão: a Garamond tem olho pequeno e pede corpo
+     maior para ler bem, ainda mais no celular. */
+  --text-xs: 0.8125rem;
+  --text-xs--line-height: 1.4;
+  --text-sm: 0.9375rem;
+  --text-sm--line-height: 1.55;
+  --text-base: 1.125rem;
+  --text-base--line-height: 1.65;
+  --text-lg: 1.25rem;
+  --text-lg--line-height: 1.6;
+  --text-xl: 1.4375rem;
+  --text-xl--line-height: 1.45;
+  --text-2xl: 1.75rem;
+  --text-2xl--line-height: 1.3;
+  --text-3xl: 2.125rem;
+  --text-3xl--line-height: 1.2;
+  --text-4xl: 2.75rem;
+  --text-4xl--line-height: 1.12;
+  --text-5xl: 3.5rem;
+  --text-5xl--line-height: 1.05;
+  --text-6xl: 4.5rem;
+  --text-6xl--line-height: 1;
+}
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--color-papel);
+  color: var(--color-marinho-escuro);
+  font-family: var(--fonte-corpo), ui-serif, Georgia, serif;
+  -webkit-font-smoothing: antialiased;
+  /* Nenhum enfeite fora da margem faz o celular rolar de lado. "clip" e
+     não "hidden", para não quebrar o cabeçalho grudado no topo. */
+  overflow-x: clip;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Textura de papel bem leve, como o fundo do convite. */
+.papel {
+  background-color: var(--color-papel);
+  background-image:
+    radial-gradient(circle at 18% 22%, rgba(255, 255, 255, 0.55), transparent 42%),
+    radial-gradient(circle at 82% 78%, rgba(236, 228, 215, 0.6), transparent 48%);
+}
+
+/* Versaletes espaçadas do convite ("CASAMENTO", "PAIS DA NOIVA"). */
+@utility versalete {
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+}
+
+@utility titulo-serif {
+  font-family: var(--fonte-titulo), ui-serif, Georgia, serif;
+  font-weight: 500;
+}
+
+@utility script {
+  font-family: var(--fonte-script), cursive;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+@media (max-width: 639px) {
+  .versalete {
+    letter-spacing: 0.18em;
+  }
+}
+
+/* O iPhone dá zoom em qualquer campo com menos de 16px, e o zoom não volta. */
+@media (max-width: 767px) {
+  input,
+  select,
+  textarea {
+    font-size: 1rem !important;
+  }
+}
+
+/* Campo de formulário padrão. */
+@utility campo {
+  width: 100%;
+  border-radius: 0.125rem;
+  border: 1px solid color-mix(in srgb, var(--color-azul) 40%, transparent);
+  background-color: var(--color-papel-claro);
+  padding: 0.7rem 0.95rem;
+  color: var(--color-marinho-escuro);
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+@utility campo {
+  &::placeholder {
+    color: color-mix(in srgb, var(--color-azul) 75%, transparent);
+  }
+  &:focus {
+    border-color: var(--color-marinho);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-marinho) 15%, transparent);
+  }
+}
+
+::selection {
+  background-color: var(--color-marinho);
+  color: var(--color-papel-claro);
+}
+
+/* -------- Entrada suave das seções --------
+   Só esconde quando o JS confirma que está rodando (.js-ativo): sem JS o
+   site aparece normalmente em vez de ficar em branco. */
+.revelar {
+  transition:
+    opacity 0.8s ease-out,
+    transform 0.8s ease-out;
+}
+.js-ativo .revelar {
+  opacity: 0;
+  transform: translateY(1.25rem);
+}
+.js-ativo .revelar.revelado {
+  opacity: 1;
+  transform: none;
+}
+
+/* Halo que "respira" em volta do botão de música enquanto toca. */
+@keyframes respirar {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(37, 58, 84, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 0 7px rgba(37, 58, 84, 0);
+  }
+}
+.respirar {
+  animation: respirar 2.6s ease-in-out infinite;
+}
+
+/* Barrinhas do equalizador do player. */
+@keyframes equalizar {
+  0%,
+  100% {
+    transform: scaleY(0.35);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+.equalizar > span {
+  transform-origin: bottom;
+  animation: equalizar 0.9s ease-in-out infinite;
+}
+.equalizar > span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.equalizar > span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .js-ativo .revelar {
+    opacity: 1;
+    transform: none;
+  }
+}
