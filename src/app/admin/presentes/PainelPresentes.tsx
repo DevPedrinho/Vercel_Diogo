@@ -260,7 +260,7 @@ export function PainelPresentes({
         </form>
       </Bloco>
 
-      <Bloco titulo="Presentes cadastrados" descricao="Use as setas para mudar a ordem em que aparecem no site.">
+      <Bloco titulo="Presentes cadastrados" descricao="No site, a lista aparece do menor para o maior valor. As setas só desempatam presentes de mesmo valor.">
         {presentes.length === 0 ? (
           <p className="text-base text-azul italic">Nenhum presente cadastrado ainda.</p>
         ) : (

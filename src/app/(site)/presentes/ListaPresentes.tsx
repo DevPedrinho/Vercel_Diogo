@@ -11,6 +11,22 @@ import { Coracao, Ramo } from "@/components/Ornamentos";
 
 const TODOS = "Todos";
 
+type Ordem = "menor" | "maior";
+
+/**
+ * Ordena pelo valor. "Valor livre" (sem preço) fica sempre no fim, e
+ * presentes de mesmo valor mantêm a ordem do painel.
+ */
+function ordenar(lista: Presente[], ordem: Ordem): Presente[] {
+  return [...lista].sort((a, b) => {
+    if (a.price_cents === null || b.price_cents === null) {
+      return (a.price_cents === null ? 1 : 0) - (b.price_cents === null ? 1 : 0);
+    }
+    const diferenca = ordem === "menor" ? a.price_cents - b.price_cents : b.price_cents - a.price_cents;
+    return diferenca || a.sort_order - b.sort_order;
+  });
+}
+
 export type DadosPix = { chave: string; titular: string; banco: string };
 
 export function ListaPresentes({
@@ -31,9 +47,11 @@ export function ListaPresentes({
   }, [presentes]);
 
   const [categoria, setCategoria] = useState(TODOS);
+  const [ordem, setOrdem] = useState<Ordem>("menor");
   const [escolhido, setEscolhido] = useState<Presente | null>(null);
 
-  const visiveis = categoria === TODOS ? presentes : presentes.filter((p) => p.category === categoria);
+  // A lista abre sempre do menor para o maior valor.
+  const visiveis = ordenar(categoria === TODOS ? presentes : presentes.filter((p) => p.category === categoria), ordem);
 
   if (presentes.length === 0) {
     return (
@@ -46,7 +64,7 @@ export function ListaPresentes({
   return (
     <>
       {categorias.length > 2 && (
-        <div className="mb-12 flex flex-wrap items-center justify-center gap-2.5">
+        <div className="mb-6 flex flex-wrap items-center justify-center gap-2.5">
           {categorias.map((cat) => {
             const ativa = categoria === cat;
             return (
@@ -65,6 +83,35 @@ export function ListaPresentes({
           })}
         </div>
       )}
+
+      <div className="mb-10 flex flex-wrap items-center justify-center gap-3">
+        <span className="text-sm text-azul">
+          {visiveis.length} {visiveis.length === 1 ? "presente" : "presentes"} · ordenar por valor:
+        </span>
+        <div role="group" aria-label="Ordenar por valor" className="inline-flex overflow-hidden rounded-full border border-ouro/50">
+          {(
+            [
+              ["menor", "Menor valor", "M12 5v14M6 13l6 6 6-6"],
+              ["maior", "Maior valor", "M12 19V5M6 11l6-6 6 6"],
+            ] as const
+          ).map(([valor, rotulo, seta]) => (
+            <button
+              key={valor}
+              type="button"
+              onClick={() => setOrdem(valor)}
+              aria-pressed={ordem === valor}
+              className={`inline-flex min-h-10 items-center gap-1.5 px-4 text-sm transition-colors ${
+                ordem === valor ? "bg-marinho text-papel-claro" : "text-marinho hover:bg-papel-escuro"
+              }`}
+            >
+              <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d={seta} />
+              </svg>
+              {rotulo}
+            </button>
+          ))}
+        </div>
+      </div>
 
       <ul className="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-3">
         {visiveis.map((p) => (
