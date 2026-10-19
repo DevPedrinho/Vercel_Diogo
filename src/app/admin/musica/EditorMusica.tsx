@@ -126,7 +126,7 @@ export function EditorMusica({
                   <p className="titulo-serif text-xl text-marinho">{titulo || "Nossa música"}</p>
                   <p className="text-sm text-azul">
                     {artista || "—"}
-                    {!musica.file_path && " · faixa de teste"}
+                    {!musica.file_path && " · música padrão do site"}
                   </p>
                 </div>
               </div>

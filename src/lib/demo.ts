@@ -106,13 +106,14 @@ export const PADRINHOS_INICIAIS: Padrinho[] = [
   padrinho(8, "noivo", "Yuri & Lara"),
 ];
 
-export const MUSICA_DEMO: MusicaDoSite = {
+/** A música escolhida pelos noivos, servida de /public. Uma música enviada
+ *  pelo painel toma o lugar dela. */
+export const MUSICA_PADRAO: MusicaDoSite = {
   file_path: null,
-  title: "Melodia de teste",
-  artist: "Instrumental provisório",
+  title: "Partilhar",
+  artist: "Rubel",
   enabled: true,
   volume: 0.5,
 };
 
-/** Arquivo servido de /public enquanto não há música enviada pelo painel. */
-export const ARQUIVO_MUSICA_DEMO = "/audio/melodia-de-teste.wav";
+export const ARQUIVO_MUSICA_PADRAO = "/audio/partilhar-rubel.mp3";

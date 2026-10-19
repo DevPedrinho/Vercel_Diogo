@@ -96,7 +96,9 @@ export function PlayerMusica({
         ref={audioRef}
         src={arquivo}
         loop
-        preload="auto"
+        // Só os metadados de cara: o arquivo inteiro baixaria para todo
+        // visitante, mesmo quem nunca ouve. O play busca o resto aos poucos.
+        preload="metadata"
         onPlay={() => setTocando(true)}
         onPause={() => setTocando(false)}
         onWaiting={() => setCarregando(true)}

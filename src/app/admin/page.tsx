@@ -18,7 +18,7 @@ export default async function PainelInicio() {
   const confirmados = respostas.filter((r) => r.attending).reduce((t, r) => t + 1 + r.companions, 0);
   const ativos = presentes.filter((p) => p.is_active).length;
   const dias = Math.max(0, Math.ceil((new Date(c.dataISO).getTime() - Date.now()) / 86_400_000));
-  const temMusica = musica.enabled && (musica.file_path || musica.title === "Melodia de teste");
+  const temMusica = musica.enabled;
 
   const cartoes: { href: string; icone: NomeIcone; titulo: string; numero: string; texto: string }[] = [
     {

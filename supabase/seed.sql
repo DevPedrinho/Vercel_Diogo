@@ -58,3 +58,6 @@ insert into public.story_events (date_label, title, description, sort_order) val
   ('Um lar compartilhado', 'Nosso lar', 'Dividimos a mesma casa, a mesma rotina e os mesmos sonhos.', 3),
   ('Quatro anos juntos', 'Sonhos e viagens', 'Quatro anos de sonhos, viagens e tantas histórias para contar.', 4),
   ('16 de janeiro de 2027', 'O nosso sim', 'Diante de Deus e de quem amamos, vamos celebrar tudo o que nos trouxe até aqui e dizer sim a uma vida inteira juntos — e não poderíamos imaginar esse dia sem você.', 5);
+
+-- A música escolhida pelos noivos (o arquivo fica em public/audio).
+update public.site_music set title = 'Partilhar', artist = 'Rubel' where id;

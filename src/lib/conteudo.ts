@@ -3,7 +3,7 @@ import { criarClienteServidor } from "@/lib/supabase/servidor";
 import { supabaseConfigurado } from "@/lib/supabase/ativo";
 import { urlDoSite } from "@/lib/storage";
 import { completarTextos, type Textos } from "@/lib/textos";
-import { ARQUIVO_MUSICA_DEMO, HISTORIA_INICIAL, MUSICA_DEMO, PADRINHOS_INICIAIS, PRESENTES_INICIAIS } from "@/lib/demo";
+import { ARQUIVO_MUSICA_PADRAO, HISTORIA_INICIAL, MUSICA_PADRAO, PADRINHOS_INICIAIS, PRESENTES_INICIAIS } from "@/lib/demo";
 import type { Confirmacao, EventoHistoria, MusicaDoSite, Padrinho, Presente } from "@/lib/tipos";
 
 /**
@@ -133,28 +133,35 @@ export const carregarHistoria = () => carregarLista<EventoHistoria>("story_event
 export const carregarPadrinhos = () => carregarLista<Padrinho>("godparents", PADRINHOS_INICIAIS);
 
 export async function carregarMusica(): Promise<MusicaDoSite> {
-  if (!supabaseConfigurado) return MUSICA_DEMO;
+  if (!supabaseConfigurado) return MUSICA_PADRAO;
   try {
     const supabase = await criarClienteServidor();
     const { data } = await supabase.from("site_music").select("*").maybeSingle();
-    return (data as MusicaDoSite | null) ?? { ...MUSICA_DEMO, file_path: null, enabled: false };
+    return (data as MusicaDoSite | null) ?? MUSICA_PADRAO;
   } catch {
-    return { ...MUSICA_DEMO, file_path: null, enabled: false };
+    return MUSICA_PADRAO;
   }
 }
 
 export type FaixaDoSite = { arquivo: string; titulo: string; artista?: string; volume: number };
 
-/** A faixa que o player toca, ou null quando a música está desligada. */
+/**
+ * A faixa que o player toca, ou null quando a música está desligada. Sem
+ * arquivo enviado pelo painel, toca a música escolhida pelos noivos
+ * (Partilhar, do Rubel), com o nome e o artista dela.
+ */
 export function faixaDoSite(musica: MusicaDoSite): FaixaDoSite | null {
   if (!musica.enabled) return null;
-  const arquivo = urlDoSite(musica.file_path) ?? (supabaseConfigurado ? null : ARQUIVO_MUSICA_DEMO);
-  if (!arquivo) return null;
+  const enviada = urlDoSite(musica.file_path);
+  const volume = Math.min(1, Math.max(0, musica.volume ?? 0.5));
+  if (enviada) {
+    return { arquivo: enviada, titulo: musica.title || "Nossa música", artista: musica.artist ?? undefined, volume };
+  }
   return {
-    arquivo,
-    titulo: musica.title || "Nossa música",
-    artista: musica.artist ?? undefined,
-    volume: Math.min(1, Math.max(0, musica.volume ?? 0.5)),
+    arquivo: ARQUIVO_MUSICA_PADRAO,
+    titulo: MUSICA_PADRAO.title ?? "Nossa música",
+    artista: MUSICA_PADRAO.artist ?? undefined,
+    volume,
   };
 }
 
