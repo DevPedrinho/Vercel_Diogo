@@ -3,8 +3,8 @@ import { criarClienteServidor } from "@/lib/supabase/servidor";
 import { supabaseConfigurado } from "@/lib/supabase/ativo";
 import { urlDoSite } from "@/lib/storage";
 import { completarTextos, type Textos } from "@/lib/textos";
-import { ARQUIVO_MUSICA_DEMO, HISTORIA_DEMO, MUSICA_DEMO, PADRINHOS_DEMO, PRESENTES_DEMO } from "@/lib/demo";
-import type { EventoHistoria, MusicaDoSite, Padrinho, Presente } from "@/lib/tipos";
+import { ARQUIVO_MUSICA_DEMO, HISTORIA_INICIAL, MUSICA_DEMO, PADRINHOS_INICIAIS, PRESENTES_INICIAIS } from "@/lib/demo";
+import type { Confirmacao, EventoHistoria, MusicaDoSite, Padrinho, Presente } from "@/lib/tipos";
 
 /**
  * Leitura do conteúdo do site no servidor. Nenhuma função daqui lança:
@@ -24,6 +24,19 @@ export type Casamento = Textos & {
   hora: string;
   imagemCasal: string;
 };
+
+/**
+ * O prazo da confirmação vale até o fim do dia, no horário de Fortaleza.
+ * Fica fora do Casamento porque lá só cabem textos.
+ */
+export function prazoDaConfirmacao(data: string): { extenso: string | null; aberto: boolean } {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(data)) return { extenso: null, aberto: true };
+  const fim = new Date(`${data}T23:59:59-03:00`);
+  return {
+    extenso: fim.toLocaleDateString("pt-BR", { day: "numeric", month: "long", year: "numeric", timeZone: FUSO }),
+    aberto: Date.now() <= fim.getTime(),
+  };
+}
 
 function montar(textos: Textos): Casamento {
   const data = new Date(textos.data_hora);
@@ -86,7 +99,7 @@ export async function carregarTextosSalvos(): Promise<Record<string, string>> {
 }
 
 export async function carregarPresentes({ todos = false } = {}): Promise<Presente[]> {
-  if (!supabaseConfigurado) return PRESENTES_DEMO;
+  if (!supabaseConfigurado) return PRESENTES_INICIAIS;
   try {
     const supabase = await criarClienteServidor();
     let consulta = supabase.from("gifts").select("*");
@@ -116,8 +129,8 @@ async function carregarLista<T>(tabela: string, demo: T[]): Promise<T[]> {
   }
 }
 
-export const carregarHistoria = () => carregarLista<EventoHistoria>("story_events", HISTORIA_DEMO);
-export const carregarPadrinhos = () => carregarLista<Padrinho>("godparents", PADRINHOS_DEMO);
+export const carregarHistoria = () => carregarLista<EventoHistoria>("story_events", HISTORIA_INICIAL);
+export const carregarPadrinhos = () => carregarLista<Padrinho>("godparents", PADRINHOS_INICIAIS);
 
 export async function carregarMusica(): Promise<MusicaDoSite> {
   if (!supabaseConfigurado) return MUSICA_DEMO;
@@ -143,4 +156,16 @@ export function faixaDoSite(musica: MusicaDoSite): FaixaDoSite | null {
     artista: musica.artist ?? undefined,
     volume: Math.min(1, Math.max(0, musica.volume ?? 0.5)),
   };
+}
+
+/** As respostas da confirmação de presença (só os noivos conseguem ler). */
+export async function carregarConfirmacoes(): Promise<Confirmacao[]> {
+  if (!supabaseConfigurado) return [];
+  try {
+    const supabase = await criarClienteServidor();
+    const { data } = await supabase.from("rsvps").select("*").order("created_at", { ascending: false });
+    return (data ?? []) as Confirmacao[];
+  } catch {
+    return [];
+  }
 }

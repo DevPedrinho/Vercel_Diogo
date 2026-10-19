@@ -6,7 +6,7 @@ export type Presente = {
   price_cents: number | null;
   image_path: string | null;
   image_url: string | null;
-  gift_url: string;
+  gift_url: string | null;
   is_active: boolean;
   sort_order: number;
   created_at: string;
@@ -49,5 +49,17 @@ export type Padrinho = {
   description: string | null;
   image_path: string | null;
   sort_order: number;
+  created_at: string;
+};
+
+/** Uma resposta do formulário de confirmação de presença. */
+export type Confirmacao = {
+  id: string;
+  name: string;
+  attending: boolean;
+  companions: number;
+  companion_names: string | null;
+  phone: string | null;
+  message: string | null;
   created_at: string;
 };

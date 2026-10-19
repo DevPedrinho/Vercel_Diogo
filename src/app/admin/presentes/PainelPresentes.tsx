@@ -41,7 +41,7 @@ export function PainelPresentes({
   const [salvando, setSalvando] = useState(false);
 
   const categorias = useMemo(
-    () => Array.from(new Set(["Casa", "Cozinha", "Quarto", "Lua de mel", ...presentes.map((p) => p.category)])),
+    () => Array.from(new Set(["Casa", "Lua de Mel", "Cota divertida", ...presentes.map((p) => p.category)])),
     [presentes],
   );
 
@@ -62,7 +62,7 @@ export function PainelPresentes({
       preco: paraCampo(p.price_cents),
       image_path: p.image_path ?? "",
       image_url: p.image_url ?? "",
-      gift_url: p.gift_url,
+      gift_url: p.gift_url ?? "",
     });
     document.getElementById("formulario")?.scrollIntoView({ behavior: "smooth" });
   }
@@ -73,7 +73,7 @@ export function PainelPresentes({
     setOk(null);
 
     if (!form.title.trim()) return setErro("Dê um nome ao presente.");
-    if (!linkSeguro(form.gift_url)) return setErro("O link do botão Presentear precisa começar com https://");
+    if (form.gift_url.trim() && !linkSeguro(form.gift_url)) return setErro("O link do botão Presentear precisa começar com https://");
     if (form.image_url.trim() && !linkSeguro(form.image_url)) return setErro("O link da foto precisa começar com https://");
     const centavos = paraCentavos(form.preco);
     if (form.preco.trim() && centavos === null) return setErro("O valor precisa ser um número, como 250 ou 1.299,90.");
@@ -88,7 +88,7 @@ export function PainelPresentes({
       price_cents: centavos,
       image_path: form.image_path || null,
       image_url: form.image_url.trim() || null,
-      gift_url: form.gift_url.trim(),
+      gift_url: form.gift_url.trim() || null,
     };
     const ultimo = presentes.reduce((m, p) => Math.max(m, p.sort_order), 0);
     const { error } = editando
@@ -210,7 +210,7 @@ export function PainelPresentes({
               <Ajuda>Deixe vazio para “valor livre”.</Ajuda>
             </div>
             <div>
-              <Rotulo htmlFor="g-link">Link do botão Presentear</Rotulo>
+              <Rotulo htmlFor="g-link">Link de pagamento (opcional)</Rotulo>
               <input
                 id="g-link"
                 type="url"
@@ -219,7 +219,7 @@ export function PainelPresentes({
                 value={form.gift_url}
                 onChange={(e) => setForm({ ...form, gift_url: e.target.value })}
               />
-              <Ajuda>Link de pagamento, PIX ou página da loja.</Ajuda>
+              <Ajuda>Vazio = o convidado paga pelo PIX do casal (configurado em Textos → Lista de presentes).</Ajuda>
             </div>
           </div>
 
@@ -307,7 +307,7 @@ export function PainelPresentes({
                       {!p.is_active && <span className="ml-2 text-sm text-azul italic">(oculto)</span>}
                     </p>
                     <p className="truncate text-sm text-azul">
-                      {formatarPreco(p.price_cents) ?? "Valor livre"} · {p.gift_url}
+                      {formatarPreco(p.price_cents) ?? "Valor livre"} · {p.gift_url ?? "PIX do casal"}
                     </p>
                   </div>
                   <div className="flex shrink-0 gap-1">

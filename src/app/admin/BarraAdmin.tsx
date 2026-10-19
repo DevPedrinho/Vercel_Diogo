@@ -7,6 +7,7 @@ import { Icone, type NomeIcone } from "@/components/Icones";
 
 const ITENS: { href: string; rotulo: string; icone: NomeIcone }[] = [
   { href: "/admin", rotulo: "Início", icone: "casa" },
+  { href: "/admin/confirmacoes", rotulo: "Confirmações", icone: "recado" },
   { href: "/admin/presentes", rotulo: "Presentes", icone: "presente" },
   { href: "/admin/historia", rotulo: "História", icone: "coracao" },
   { href: "/admin/padrinhos", rotulo: "Padrinhos", icone: "pessoas" },
@@ -33,10 +34,10 @@ export function BarraAdmin({ email, demo }: { email: string; demo: boolean }) {
           <span>V</span>
           <span className="h-5 w-px bg-ouro" aria-hidden="true" />
           <span>D</span>
-          <span className="versalete ml-2 hidden text-[0.7rem] text-papel/70 sm:inline">Painel</span>
+          <span className="versalete ml-2 hidden text-[0.7rem] text-papel/70 xl:inline">Painel</span>
         </Link>
 
-        <nav className="ml-auto hidden items-center gap-0.5 lg:flex">
+        <nav className="ml-auto hidden items-center gap-0.5 xl:flex">
           {ITENS.map((i) => (
             <Link
               key={i.href}
@@ -51,7 +52,7 @@ export function BarraAdmin({ email, demo }: { email: string; demo: boolean }) {
           ))}
         </nav>
 
-        <div className="ml-auto flex items-center gap-1 lg:ml-3">
+        <div className="ml-auto flex items-center gap-1 xl:ml-3">
           <Link
             href="/"
             target="_blank"
@@ -74,12 +75,12 @@ export function BarraAdmin({ email, demo }: { email: string; demo: boolean }) {
       </div>
 
       {/* No celular os módulos descem para uma faixa própria. */}
-      <nav className="grid grid-cols-6 border-t border-papel/10 lg:hidden">
+      <nav className="grid grid-cols-7 border-t border-papel/10 xl:hidden">
         {ITENS.map((i) => (
           <Link
             key={i.href}
             href={i.href}
-            className={`flex min-h-12 flex-col items-center justify-center gap-0.5 text-xs ${
+            className={`flex min-h-12 flex-col items-center justify-center gap-0.5 text-[0.65rem] ${
               ativo(i.href) ? "bg-papel-claro/12 text-papel-claro" : "text-papel/70"
             }`}
           >

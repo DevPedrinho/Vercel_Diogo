@@ -7,7 +7,7 @@
  * site nunca abre com um buraco no lugar de um texto.
  */
 
-export type TipoCampo = "linha" | "paragrafo" | "url" | "datahora" | "imagem";
+export type TipoCampo = "linha" | "paragrafo" | "url" | "datahora" | "data" | "imagem";
 
 export type CampoTexto = {
   chave: string;
@@ -116,7 +116,7 @@ export const GRUPOS: GrupoTextos[] = [
         rotulo: "Nossa história · texto",
         tipo: "paragrafo",
         padrao:
-          "Algumas histórias começam devagar, quase sem a gente perceber. A nossa foi assim: uma conversa que virou costume, um costume que virou saudade, e uma saudade que virou certeza.\n\nHoje, diante de Deus e de quem a gente ama, queremos dizer sim um ao outro — e dividir esse dia com você.",
+          "Tudo começou em 2022 com uma conversa inesperada, daquelas que a gente nem imagina onde podem chegar. O que começou com um match se transformou em amor, companheirismo, um lar compartilhado e quatro anos de sonhos, viagens e tantas histórias para contar.\n\nHoje, diante de Deus e de quem amamos, queremos celebrar tudo o que nos trouxe até aqui e dizer sim a uma vida inteira juntos. E não poderíamos imaginar esse dia sem compartilhar essa alegria com você.",
         ajuda: "Deixe uma linha em branco entre os parágrafos.",
       },
       {
@@ -157,27 +157,28 @@ export const GRUPOS: GrupoTextos[] = [
       },
       {
         chave: "dress_cores",
-        rotulo: "Paleta sugerida",
+        rotulo: "Nossa paleta de cores",
         tipo: "paragrafo",
-        padrao: "Azul sereno | #a9b9ca\nAzul empoeirado | #5b7189\nAreia | #e3d5bf\nDourado suave | #c8ab7a\nVerde sálvia | #a7b39b",
+        padrao: "Azul-marinho | #253a54\nAzul empoeirado | #5b7189\nAzul sereno | #a9b9ca\nDourado | #a88a5e\nChampanhe | #d9c7a4",
         ajuda: "Uma cor por linha: nome | código da cor. Ex.: Azul sereno | #a9b9ca",
       },
       {
         chave: "dress_elas",
         rotulo: "Para elas",
         tipo: "paragrafo",
-        padrao: "Vestidos midi ou longos, em tecidos leves. A cerimônia é numa capela: prefira ombros cobertos ou um xale.",
+        padrao:
+          "Vestidos midi ou longos, em tecidos leves. As cores estão liberadas, com exceção do branco. Para quem desejar seguir a identidade visual da cerimônia, segue a nossa paleta de cores.",
       },
       {
         chave: "dress_eles",
         rotulo: "Para eles",
         tipo: "paragrafo",
-        padrao: "Calça social, camisa de botão e sapato. Blazer é bem-vindo; gravata, opcional.",
+        padrao: "Recomendamos o uso de calça e camisa social. Blazer é bem-vindo, mas não obrigatório.",
       },
       {
         chave: "dress_evitar",
         rotulo: "Evitar",
-        padrao: "Branco, off-white e tons muito claros — essas cores são da noiva.",
+        padrao: "O branco fica reservado para a noiva.",
       },
     ],
   },
@@ -206,12 +207,41 @@ export const GRUPOS: GrupoTextos[] = [
         rotulo: "Texto de abertura",
         tipo: "paragrafo",
         padrao:
-          "Sua presença já é o nosso maior presente. Mas, se quiser abençoar o começo da nossa vida juntos, escolha um item abaixo — o botão leva direto para o pagamento.",
+          "Sua presença já é o nosso maior presente. Mas, se quiser abençoar o começo da nossa vida juntos, escolha um item abaixo e presenteie pelo PIX. Os valores são sugestões de cotas — não precisam ser o preço exato de cada produto.",
       },
+      {
+        chave: "pix_chave",
+        rotulo: "Chave PIX do casal",
+        padrao: "",
+        ajuda: "Usada nos presentes sem link próprio: o convidado vê o valor e copia a chave.",
+      },
+      { chave: "pix_titular", rotulo: "Nome do titular do PIX", padrao: "" },
+      { chave: "pix_banco", rotulo: "Banco do PIX (opcional)", padrao: "" },
       {
         chave: "presentes_obrigado",
         rotulo: "Agradecimento depois de presentear",
         padrao: "Obrigado pelo carinho! Que Deus te abençoe.",
+      },
+    ],
+  },
+  {
+    id: "confirmacao",
+    titulo: "Confirmação de presença",
+    descricao: "O formulário de confirmação e o prazo. Depois do prazo, o formulário fecha sozinho.",
+    campos: [
+      { chave: "rsvp_titulo", rotulo: "Título", padrao: "Confirme sua presença" },
+      {
+        chave: "rsvp_intro",
+        rotulo: "Texto de abertura",
+        tipo: "paragrafo",
+        padrao: "Sua presença é muito importante para nós! Para organizarmos tudo com carinho, pedimos que confirme até a data abaixo.",
+      },
+      { chave: "rsvp_prazo", rotulo: "Prazo para confirmar", tipo: "data", padrao: "2026-10-30" },
+      {
+        chave: "rsvp_encerrado",
+        rotulo: "Mensagem depois do prazo",
+        tipo: "paragrafo",
+        padrao: "O prazo de confirmação terminou. Se ainda precisar falar com a gente, chame os noivos no WhatsApp.",
       },
     ],
   },

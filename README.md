@@ -6,7 +6,7 @@ nos cantos e o selo de cera **V | D**.
 
 Mesma base do site da Deysiane & Pedro (Next.js + Supabase + Tailwind), mas
 com um painel enxuto: os noivos cuidam **dos presentes, da música, dos textos,
-da linha do tempo e dos padrinhos**. Não há cadastro de convidado — o site é aberto.
+da linha do tempo, dos padrinhos e das confirmações de presença**. Não há cadastro de convidado — o site é aberto.
 
 ## Páginas
 
@@ -15,9 +15,11 @@ da linha do tempo e dos padrinhos**. Não há cadastro de convidado — o site �
 | Início | `/` | Save the date animado, contagem regressiva com anéis, o convite, locais com mapa, nossa história, dress code com paleta, padrinhos e a bênção |
 | Nossa história | `/nossa-historia` | Linha do tempo com capítulos, datas e fotos em moldura de arco |
 | Padrinhos | `/padrinhos` | Padrinhos e madrinhas separados pelo lado da noiva e do noivo |
-| Presentes | `/presentes` | Lista com filtro por categoria; o botão **Presentear** abre o link de pagamento e pede nome e recado (opcional) |
+| Presentes | `/presentes` | Os 39 presentes da planilha dos noivos, com filtro por categoria; o botão **Presentear** mostra o valor e a chave PIX do casal (ou abre o link de pagamento, quando o item tiver um) e pede nome e recado |
+| Confirmar presença | `/confirmar` | Formulário de RSVP com acompanhantes; fecha sozinho depois do prazo (30/10/2026) |
 | Entrar | `/entrar` | Login dos noivos |
 | Painel | `/admin` | Resumo e últimos recados |
+| Confirmações (painel) | `/admin/confirmacoes` | Total de pessoas confirmadas, busca, filtro e download em planilha (CSV) |
 | Presentes (painel) | `/admin/presentes` | Adicionar, editar, ocultar, reordenar e remover presentes; ler e apagar recados |
 | História (painel) | `/admin/historia` | Capítulos da linha do tempo: título, quando, texto e foto, com ordem |
 | Padrinhos (painel) | `/admin/padrinhos` | Nome, papel, lado do altar, frase e foto, com ordem |
@@ -30,14 +32,18 @@ no primeiro toque.
 
 ## Modo demonstração
 
-Sem as variáveis do Supabase o site abre igual, com os textos do convite,
-seis presentes de exemplo e a melodia de teste. O painel abre sem login, só
-para olhar — os botões de salvar avisam que falta conectar o banco.
+Sem as variáveis do Supabase o site abre igual, com os textos do convite, a
+lista de presentes, os padrinhos e a linha do tempo, e a melodia de teste. O
+painel abre sem login, só para olhar — os botões de salvar avisam que falta
+conectar o banco. **A confirmação de presença e os recados só são guardados
+com o Supabase ligado.**
 
 ## Colocando no ar
 
 1. **Supabase** — crie um projeto e rode, em ordem, os arquivos de `supabase/migrations/`
    no SQL Editor. Eles criam as tabelas, as regras de acesso (RLS) e o bucket `site`.
+   Depois rode `supabase/seed.sql` uma vez: ele grava os 39 presentes da planilha,
+   os 8 casais de padrinhos e a linha do tempo, para o painel já começar preenchido.
 2. **Conta dos noivos** — em *Authentication → Users → Add user*, crie o
    e-mail e a senha (marque *Auto Confirm User*). Depois, no SQL Editor:
    ```sql

@@ -1,24 +1,33 @@
 import Link from "next/link";
-import { carregarCasamento, carregarHistoria, carregarMusica, carregarPadrinhos, carregarPresentes } from "@/lib/conteudo";
+import { carregarCasamento, carregarConfirmacoes, carregarHistoria, carregarMusica, carregarPadrinhos, carregarPresentes } from "@/lib/conteudo";
 import { carregarRecados } from "@/lib/admin";
 import { formatarDataHora } from "@/lib/formato";
 import { TituloPagina } from "@/components/Formulario";
 import { Icone, type NomeIcone } from "@/components/Icones";
 
 export default async function PainelInicio() {
-  const [c, presentes, musica, recados, historia, padrinhos] = await Promise.all([
+  const [c, presentes, musica, recados, historia, padrinhos, respostas] = await Promise.all([
     carregarCasamento(),
     carregarPresentes({ todos: true }),
     carregarMusica(),
     carregarRecados(5),
     carregarHistoria(),
     carregarPadrinhos(),
+    carregarConfirmacoes(),
   ]);
+  const confirmados = respostas.filter((r) => r.attending).reduce((t, r) => t + 1 + r.companions, 0);
   const ativos = presentes.filter((p) => p.is_active).length;
   const dias = Math.max(0, Math.ceil((new Date(c.dataISO).getTime() - Date.now()) / 86_400_000));
   const temMusica = musica.enabled && (musica.file_path || musica.title === "Melodia de teste");
 
   const cartoes: { href: string; icone: NomeIcone; titulo: string; numero: string; texto: string }[] = [
+    {
+      href: "/admin/confirmacoes",
+      icone: "recado",
+      titulo: "Confirmações",
+      numero: String(confirmados),
+      texto: `pessoas confirmadas · ${respostas.length} ${respostas.length === 1 ? "resposta" : "respostas"}`,
+    },
     {
       href: "/admin/presentes",
       icone: "presente",

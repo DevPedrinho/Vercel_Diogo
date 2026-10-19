@@ -1,38 +1,109 @@
 import type { EventoHistoria, MusicaDoSite, Padrinho, Presente } from "@/lib/tipos";
 
 /**
- * O que o site mostra enquanto o Supabase não está ligado: presentes de
- * exemplo e a melodia de teste. Assim dá para ver o site inteiro funcionando
- * antes de criar o banco. Com o Supabase configurado, nada daqui aparece.
+ * Conteúdo inicial do site: a lista de presentes da planilha dos noivos, os
+ * padrinhos e a linha do tempo. É o que aparece enquanto o Supabase não está
+ * ligado — e é o mesmo conteúdo que supabase/seed.sql grava no banco, para o
+ * painel já começar preenchido.
  */
 
-const item = (
-  n: number,
-  title: string,
-  category: string,
-  reais: number | null,
-  description: string,
-): Presente => ({
-  id: `demo-${n}`,
+const CRIADO = "2026-10-19T12:00:00Z";
+
+const presente = (n: number, category: string, title: string, reais: number | null, description: string | null): Presente => ({
+  id: `inicial-${n}`,
   title,
   description,
   category,
   price_cents: reais === null ? null : reais * 100,
   image_path: null,
   image_url: null,
-  gift_url: "https://exemplo.com/pagamento",
+  // Sem link: o botão Presentear mostra o PIX do casal.
+  gift_url: null,
   is_active: true,
   sort_order: n,
-  created_at: "2026-10-15T12:00:00Z",
+  created_at: CRIADO,
 });
 
-export const PRESENTES_DEMO: Presente[] = [
-  item(1, "Jogo de panelas", "Cozinha", 480, "Para os primeiros almoços de domingo da casa nova."),
-  item(2, "Jogo de cama queen", "Quarto", 320, "Lençóis macios para descansar depois da festa."),
-  item(3, "Jantar a dois", "Lua de mel", 250, "Uma noite especial na viagem de lua de mel."),
-  item(4, "Cafeteira", "Cozinha", 390, "Café fresquinho todas as manhãs — prometemos convidar."),
-  item(5, "Passeio de barco", "Lua de mel", 600, "O pôr do sol mais bonito da viagem."),
-  item(6, "Cota livre", "Casa", null, "Escolha o valor que o seu coração mandar."),
+export const PRESENTES_INICIAIS: Presente[] = [
+  presente(1, "Casa", "Aparelho de jantar dos sonhos", 450, "Para receber a família e os amigos com uma mesa linda."),
+  presente(2, "Casa", "Faqueiro Tramontina", 350, "Para nossas refeições, dos almoços simples aos jantares especiais."),
+  presente(3, "Casa", "Fogão para as aventuras culinárias", 1400, "Para preparar nossas receitas favoritas e alimentar muitos momentos felizes."),
+  presente(4, "Casa", "Gelágua para refrescar a vida", 450, "Porque amor é bom, mas água gelada também é indispensável!"),
+  presente(5, "Casa", "Ar-condicionado para noites tranquilas", 1600, "Para dormir juntinhos, com conforto e sem disputar o ventilador."),
+  presente(6, "Casa", "Cortinas blackout", 250, "Para garantir escurinho, privacidade e aquelas manhãs de sono prolongado."),
+  presente(7, "Casa", "Enxoval de cama dos sonhos", 500, "Para deixar nosso cantinho ainda mais confortável e cheio de carinho."),
+  presente(8, "Casa", "Jogo de panelas", 650, "Para nossas experiências gastronômicas, inclusive as que derem errado."),
+  presente(9, "Casa", "Depurador", 450, "Para uma cozinha sem fumaça e sem estresse."),
+  presente(10, "Casa", "Torradeira do café da manhã", 180, "Para nossas manhãs começarem com pão quentinho."),
+  presente(11, "Casa", "Jogo de taças e copos", 300, "Para brindar às pequenas e grandes conquistas."),
+  presente(12, "Casa", "Panela de pressão elétrica", 500, "Para preparar refeições deliciosas sem passar horas na cozinha."),
+  presente(13, "Casa", "1 Parcela da Lava e Seca", 300, "Uma contribuição para equipar nossa área de serviço."),
+  presente(14, "Lua de Mel", "Ajuda na 1° viagem internacional do casal", 500, "Contribua para que possamos realizar nosso sonho de viajar para fora do país."),
+  presente(15, "Casa", "Luminárias para noites aconchegantes", 300, "Para criar aquele clima gostoso no fim do dia."),
+  presente(16, "Casa", "Jogo de toalhas macias", 200, "Para completar o enxoval com conforto e elegância."),
+  presente(17, "Casa", "Fundo para a geladeira dos sonhos", 800, "Uma contribuição para conservar nossos alimentos e abastecer a casa nova."),
+  presente(18, "Lua de Mel", "Nosso primeiro café de casados", 150, "Para começar a vida a dois com café, carinho e muito amor."),
+  presente(19, "Lua de Mel", "Vale-jantar romântico", 250, "Para um encontro especial depois da correria do casamento."),
+  presente(20, "Lua de Mel", "Patrocine nossa próxima viagem", 350, "Para colecionarmos novas paisagens e lembranças."),
+  presente(21, "Lua de Mel", "Cinema sem sair de casa", 150, "Para pipoca, filmes e aquela discussão sobre quem escolhe o próximo."),
+  presente(22, "Lua de Mel", "1 dose de Monjaro pra Noiva", 250, "Para dançarmos juntos, mesmo quando um de nós errar o passo."),
+  presente(23, "Lua de Mel", "Dia de descanso dos recém-casados", 350, "Para desacelerar depois de organizar cada detalhe do casamento."),
+  presente(24, "Lua de Mel", "Noite da pizza", 180, "Para cozinhar juntos ou pedir aquela pizza sem culpa."),
+  presente(25, "Lua de Mel", "Um passeio surpresa", 250, "Para sair da rotina e criar uma memória inesperada."),
+  presente(26, "Lua de Mel", "Vale um churrasco na nossa casa", 200, "Uma contribuição oficial para garantir que sempre te convidaremos."),
+  presente(27, "Lua de Mel", "Fundo para nossas disputas de jogos", 180, "Para jogos, risadas e uma competição saudável (ou quase)."),
+  presente(28, "Lua de Mel", "Café da manhã na cama", 200, "Para surpreender um ao outro sem precisar sair do quarto."),
+  presente(29, "Lua de Mel", "Vale o primeiro lugar na fila do jantar", 150, "Vamos garantir que você seja a primeira pessoa a ser servida no jantar do Buffet."),
+  presente(30, "Lua de Mel", "Uma escapadinha a dois", 350, "Para um passeio especial e um tempo só nosso."),
+  presente(31, "Casa", "Ajuda para organizar a casa", 250, "Para transformar caixas e bagunça em um lar cheio de personalidade."),
+  presente(32, "Cota divertida", "ANTI - TPM", 180, "Para que o noivo sobreviva a esse período"),
+  presente(33, "Cota divertida", "Paz na escolha do filme", 200, "Para ver o filme que os dois escolherem sem passar uma hora procurando."),
+  presente(34, "Casa", "Fundo contra a louça acumulada", 250, "Uma contribuição para ajudar a comprar nossa máquina de lavar louça"),
+  presente(35, "Lua de Mel", "Mala pronta para novas aventuras", 350, "Para ajudar a preparar a próxima viagem do casal."),
+  presente(36, "Casa", "Nosso lar, nosso refúgio", 500, "Para investir em detalhes que deixem nossa casa ainda mais acolhedora."),
+  presente(37, "Lua de Mel", "Fundo para realizar um sonho", 800, "Uma contribuição para transformar um dos nossos planos em realidade."),
+  presente(38, "Lua de Mel", "Presente para nossa vida inteira", 1000, "Para brindar ao amor, à parceria e a todos os sonhos que ainda vamos realizar juntos."),
+  presente(39, "Cota divertida", "Minoxidil para o noivo", 250, "Para ajudar o noivo a cuidar do visual e manter a esperança de uma cabeleira de respeito no grande dia! 😂"),
+];
+
+const capitulo = (n: number, date_label: string, title: string, description: string): EventoHistoria => ({
+  id: `inicial-h${n}`,
+  title,
+  date_label,
+  description,
+  image_path: null,
+  sort_order: n,
+  created_at: CRIADO,
+});
+
+export const HISTORIA_INICIAL: EventoHistoria[] = [
+  capitulo(1, "2022", "Um match inesperado", "Tudo começou com uma conversa inesperada, daquelas que a gente nem imagina onde podem chegar."),
+  capitulo(2, "Amor e companheirismo", "Do match ao amor", "O que começou com um match se transformou em amor e companheirismo."),
+  capitulo(3, "Um lar compartilhado", "Nosso lar", "Dividimos a mesma casa, a mesma rotina e os mesmos sonhos."),
+  capitulo(4, "Quatro anos juntos", "Sonhos e viagens", "Quatro anos de sonhos, viagens e tantas histórias para contar."),
+  capitulo(5, "16 de janeiro de 2027", "O nosso sim", "Diante de Deus e de quem amamos, vamos celebrar tudo o que nos trouxe até aqui e dizer sim a uma vida inteira juntos — e não poderíamos imaginar esse dia sem você."),
+];
+
+const padrinho = (n: number, side: "noiva" | "noivo", name: string): Padrinho => ({
+  id: `inicial-p${n}`,
+  name,
+  role: "Padrinhos",
+  side,
+  description: null,
+  image_path: null,
+  sort_order: n,
+  created_at: CRIADO,
+});
+
+export const PADRINHOS_INICIAIS: Padrinho[] = [
+  padrinho(1, "noiva", "Rita & Roberto"),
+  padrinho(2, "noiva", "Bárbara & Jean"),
+  padrinho(3, "noiva", "Ismênia & José"),
+  padrinho(4, "noiva", "Ludmylla & João Victor"),
+  padrinho(5, "noivo", "Priscila & Breno"),
+  padrinho(6, "noivo", "Thyago & Gleiciane"),
+  padrinho(7, "noivo", "Patrick & Letícia"),
+  padrinho(8, "noivo", "Yuri & Lara"),
 ];
 
 export const MUSICA_DEMO: MusicaDoSite = {
@@ -45,43 +116,3 @@ export const MUSICA_DEMO: MusicaDoSite = {
 
 /** Arquivo servido de /public enquanto não há música enviada pelo painel. */
 export const ARQUIVO_MUSICA_DEMO = "/audio/melodia-de-teste.wav";
-
-/* Capítulos de exemplo: mostram o formato da linha do tempo até os noivos
-   escreverem a história deles no painel. */
-const capitulo = (n: number, title: string, date_label: string, description: string): EventoHistoria => ({
-  id: `demo-h${n}`,
-  title,
-  date_label,
-  description,
-  image_path: null,
-  sort_order: n,
-  created_at: "2026-10-15T12:00:00Z",
-});
-
-export const HISTORIA_DEMO: EventoHistoria[] = [
-  capitulo(1, "Onde tudo começou", "O primeiro olhar", "Aqui entra como vocês se conheceram — o lugar, o dia, quem apresentou quem."),
-  capitulo(2, "O primeiro encontro", "Os primeiros passos", "Conte do primeiro encontro: onde foi, o que comeram, quem ficou mais nervoso."),
-  capitulo(3, "Namoro", "Lado a lado", "As viagens, as manias, as fotos favoritas: os momentos que fizeram vocês terem certeza."),
-  capitulo(4, "O pedido", "Sim!", "Como foi o pedido — e se alguém chorou (provavelmente sim)."),
-  capitulo(5, "O grande dia", "16 de janeiro de 2027", "Diante de Deus e de quem amamos, o capítulo mais bonito começa — e você está nele."),
-];
-
-const padrinho = (n: number, name: string, role: string, side: "noiva" | "noivo"): Padrinho => ({
-  id: `demo-p${n}`,
-  name,
-  role,
-  side,
-  description: null,
-  image_path: null,
-  sort_order: n,
-  created_at: "2026-10-15T12:00:00Z",
-});
-
-export const PADRINHOS_DEMO: Padrinho[] = [
-  padrinho(1, "Madrinha & Padrinho", "Padrinhos", "noiva"),
-  padrinho(2, "Madrinha & Padrinho", "Padrinhos", "noiva"),
-  padrinho(3, "Madrinha & Padrinho", "Padrinhos", "noiva"),
-  padrinho(4, "Madrinha & Padrinho", "Padrinhos", "noivo"),
-  padrinho(5, "Madrinha & Padrinho", "Padrinhos", "noivo"),
-  padrinho(6, "Madrinha & Padrinho", "Padrinhos", "noivo"),
-];

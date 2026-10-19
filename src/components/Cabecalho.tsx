@@ -9,8 +9,8 @@ const LINKS = [
   { href: "/nossa-historia", rotulo: "Nossa história" },
   { href: "/padrinhos", rotulo: "Padrinhos" },
   { href: "/#dress-code", rotulo: "Dress code" },
-  { href: "/#locais", rotulo: "Local" },
   { href: "/presentes", rotulo: "Presentes" },
+  { href: "/confirmar", rotulo: "Confirmar presença", destaque: true },
 ];
 
 export function Cabecalho({ iniciais }: { iniciais: [string, string] }) {
@@ -44,8 +44,12 @@ export function Cabecalho({ iniciais }: { iniciais: [string, string] }) {
             <li key={l.href}>
               <Link
                 href={l.href}
-                className={`versalete titulo-serif text-xs font-semibold transition-colors hover:text-marinho ${
-                  caminho === l.href ? "text-marinho" : "text-azul"
+                className={`versalete titulo-serif text-xs font-semibold transition-colors ${
+                  "destaque" in l
+                    ? "rounded-sm border border-marinho/50 px-3.5 py-2 text-marinho hover:bg-marinho hover:text-papel-claro"
+                    : caminho === l.href
+                      ? "text-marinho"
+                      : "text-azul hover:text-marinho"
                 }`}
               >
                 {l.rotulo}

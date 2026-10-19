@@ -77,6 +77,7 @@ function Grupo({
       const v = valores[c.chave].trim();
       if (c.tipo === "url" && v && !linkSeguro(v)) return setErro(`“${c.rotulo}” precisa ser um link começando com https://`);
       if (c.tipo === "datahora" && Number.isNaN(new Date(v).getTime())) return setErro("Confira a data e a hora.");
+      if (c.tipo === "data" && v && !/^\d{4}-\d{2}-\d{2}$/.test(v)) return setErro(`Confira a data de “${c.rotulo}”.`);
     }
     if (demo) return setErro(AVISO_DEMO);
 
@@ -171,7 +172,7 @@ function Campo({
           ) : (
             <input
               id={id}
-              type={campo.tipo === "url" ? "url" : "text"}
+              type={campo.tipo === "url" ? "url" : campo.tipo === "data" ? "date" : "text"}
               className="campo"
               placeholder={campo.padrao}
               value={valor}

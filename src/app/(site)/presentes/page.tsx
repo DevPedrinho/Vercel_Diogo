@@ -30,7 +30,12 @@ export default async function Presentes() {
       </section>
 
       <Secao fundo="claro">
-        <ListaPresentes presentes={presentes} obrigado={c.presentes_obrigado} salvarRecados={supabaseConfigurado} />
+        <ListaPresentes
+          presentes={presentes}
+          obrigado={c.presentes_obrigado}
+          pix={{ chave: c.pix_chave, titular: c.pix_titular, banco: c.pix_banco }}
+          salvarRecados={supabaseConfigurado}
+        />
       </Secao>
 
       <Secao fundo="azul">

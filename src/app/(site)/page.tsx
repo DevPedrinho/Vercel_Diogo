@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { carregarCasamento, carregarPadrinhos } from "@/lib/conteudo";
+import { carregarCasamento, carregarPadrinhos, prazoDaConfirmacao } from "@/lib/conteudo";
 import { DressCode } from "@/components/DressCode";
 import { CartaoPadrinho } from "@/components/CartaoPadrinho";
 import { Revelar } from "@/components/Revelar";
@@ -28,6 +28,7 @@ function linhas(texto: string) {
 
 export default async function Inicio() {
   const [c, padrinhos] = await Promise.all([carregarCasamento(), carregarPadrinhos()]);
+  const prazo = prazoDaConfirmacao(c.rsvp_prazo);
   const iniciais: [string, string] = [c.noiva[0] ?? "V", c.noivo[0] ?? "D"];
   const [primeiraPalavra, ...resto] = c.capa_sobretitulo.trim().split(/\s+/);
   // "Save the date" vira SAVE / the / DATE, como no save the date impresso.
@@ -76,9 +77,9 @@ export default async function Inicio() {
           <Divisor className="mt-5" />
 
           <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <BotaoLink href="#convite">Ver o convite</BotaoLink>
-            <BotaoLink href="/presentes" variante="contorno">
-              Lista de presentes
+            {prazo.aberto && <BotaoLink href="/confirmar">Confirmar presença</BotaoLink>}
+            <BotaoLink href="#convite" variante={prazo.aberto ? "contorno" : "solido"}>
+              Ver o convite
             </BotaoLink>
           </div>
         </div>
@@ -173,6 +174,18 @@ export default async function Inicio() {
         </div>
       </section>
 
+      {/* ---------- Confirmação de presença ---------- */}
+      <Secao id="confirmacao" fundo="azul" sobretitulo={prazo.aberto && prazo.extenso ? `Até ${prazo.extenso}` : undefined} titulo={c.rsvp_titulo}>
+        <div className="mx-auto max-w-xl text-center">
+          <p className="text-lg leading-relaxed text-papel-claro">{prazo.aberto ? c.rsvp_intro : c.rsvp_encerrado}</p>
+          {prazo.aberto && (
+            <BotaoLink href="/confirmar" variante="claro" className="mt-10">
+              Confirmar minha presença
+            </BotaoLink>
+          )}
+        </div>
+      </Secao>
+
       {/* ---------- Como chegar ---------- */}
       <Secao id="locais" fundo="claro" sobretitulo="Como chegar" titulo="Onde vamos celebrar">
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -228,18 +241,30 @@ export default async function Inicio() {
       {padrinhos.length > 0 && (
         <Secao id="padrinhos" sobretitulo="Ao nosso lado no altar" titulo={c.padrinhos_titulo}>
           <p className="mx-auto -mt-4 mb-12 max-w-xl text-center text-lg text-marinho">{c.padrinhos_intro}</p>
-          <ul className="grid grid-cols-2 gap-x-4 gap-y-10 sm:grid-cols-3">
-            {padrinhos.slice(0, 6).map((p, i) => (
-              <li key={p.id}>
-                <Revelar atraso={(i % 3) * 120}>
-                  <CartaoPadrinho p={p} />
-                </Revelar>
-              </li>
-            ))}
-          </ul>
+          <div className="space-y-14">
+            {(["noiva", "noivo"] as const).map((lado) => {
+              const lista = padrinhos.filter((p) => p.side === lado);
+              if (lista.length === 0) return null;
+              return (
+                <div key={lado}>
+                  <Faixa className="text-xs">{lado === "noiva" ? "Do lado da noiva" : "Do lado do noivo"}</Faixa>
+                  <p className="script mt-1 text-center text-4xl text-marinho">{lado === "noiva" ? c.noiva : c.noivo}</p>
+                  <ul className="mt-8 grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-4">
+                    {lista.map((p, i) => (
+                      <li key={p.id}>
+                        <Revelar atraso={(i % 4) * 110}>
+                          <CartaoPadrinho p={p} />
+                        </Revelar>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              );
+            })}
+          </div>
           <div className="mt-12 text-center">
             <BotaoLink href="/padrinhos" variante="contorno">
-              {padrinhos.length > 6 ? `Ver todos os ${padrinhos.length}` : "Conhecer os padrinhos"}
+              Conhecer os padrinhos
             </BotaoLink>
           </div>
         </Secao>
