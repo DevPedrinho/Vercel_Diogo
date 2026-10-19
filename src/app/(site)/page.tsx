@@ -7,7 +7,7 @@ import { Secao } from "@/components/Secao";
 import { BotaoExterno, BotaoLink } from "@/components/Botao";
 import { Contagem } from "@/components/Contagem";
 import { Icone, type NomeIcone } from "@/components/Icones";
-import { Aquarela, Coracao, Divisor, Faixa, Moldura, Ramo, Selo } from "@/components/Ornamentos";
+import { Aquarela, Coracao, Divisor, Faixa, Ramo, Selo } from "@/components/Ornamentos";
 import { linkSeguro } from "@/lib/formato";
 
 /** "Fulano (em memória)" → nome normal + observação em itálico. */
@@ -44,7 +44,6 @@ export default async function Inicio() {
           <Ramo />
         </div>
         <Ramo espelhado className="pointer-events-none absolute right-2 bottom-24 hidden w-40 rotate-180 sm:block" />
-        <Moldura className="sm:inset-8" />
 
         <div className="entrada relative mx-auto max-w-2xl text-center">
           {capaEmTres ? (
@@ -56,7 +55,6 @@ export default async function Inicio() {
           ) : (
             <h1 className="titulo-serif versalete text-4xl text-marinho sm:text-6xl">{c.capa_sobretitulo}</h1>
           )}
-          <Divisor className="mt-6" />
 
           <Image
             src={c.imagemCasal}
@@ -64,7 +62,7 @@ export default async function Inicio() {
             width={730}
             height={470}
             priority
-            className="mx-auto mt-6 w-full max-w-[26rem] sm:max-w-[30rem]"
+            className="mx-auto mt-8 w-full max-w-[26rem] sm:max-w-[30rem]"
           />
 
           <p className="script -mt-6 text-7xl leading-none text-marinho sm:-mt-10 sm:text-8xl">{c.noiva}</p>
@@ -74,7 +72,6 @@ export default async function Inicio() {
           <p className="titulo-serif mt-6 text-3xl tracking-[0.2em] text-ouro-escuro tabular-nums lining-nums sm:text-4xl">
             {c.dataCurta}
           </p>
-          <Divisor className="mt-5" />
 
           <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
             {prazo.aberto && <BotaoLink href="/confirmar">Confirmar presença</BotaoLink>}

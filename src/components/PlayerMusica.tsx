@@ -5,12 +5,15 @@ import { useEffect, useRef, useState } from "react";
 /**
  * A música do site: uma pílula discreta no canto da tela.
  *
- * Navegador nenhum deixa um site tocar som antes de a pessoa encostar na
- * tela — é regra do Chrome e do Safari. Então tentamos tocar assim que a
- * página abre e, se o navegador recusar (o normal no celular), a música
- * entra no primeiro toque em qualquer lugar. Quem pausar na mão não é
- * interrompido de novo.
+ * A música começa sozinha 2 segundos depois de a página abrir. Só que
+ * navegador nenhum deixa um site tocar som antes de a pessoa interagir com
+ * ele — é regra do Chrome e do Safari, não escolha nossa. Então, se o
+ * navegador recusar (o normal na primeira visita, ainda mais no celular), a
+ * música entra no primeiro toque ou clique em qualquer lugar da página. Quem
+ * pausar na mão não é interrompido de novo.
  */
+const ESPERA_MS = 2000;
+
 export function PlayerMusica({
   arquivo,
   titulo,
@@ -34,10 +37,11 @@ export function PlayerMusica({
 
   useEffect(() => {
     let encerrado = false;
+    let liberado = false; // os 2 segundos já passaram?
 
     async function tentar() {
       const audio = audioRef.current;
-      if (!audio || encerrado || pausouNaMao.current || !audio.paused) return false;
+      if (!audio || encerrado || !liberado || pausouNaMao.current || !audio.paused) return false;
       try {
         await audio.play();
         return true;
@@ -46,7 +50,13 @@ export function PlayerMusica({
       }
     }
 
-    void tentar();
+    // Os 2 segundos de respiro antes de a música entrar. Um toque antes
+    // disso já conta: no Chrome a permissão do toque vale para o resto da
+    // visita, então o play dos 2 segundos passa.
+    const relogio = setTimeout(() => {
+      liberado = true;
+      void tentar().then((tocou) => tocou && desarmar());
+    }, ESPERA_MS);
 
     // O toque no próprio botão é dele: se este toque desse o play, o clique
     // logo em seguida pausaria.
@@ -66,6 +76,7 @@ export function PlayerMusica({
 
     return () => {
       encerrado = true;
+      clearTimeout(relogio);
       desarmar();
     };
   }, [arquivo]);

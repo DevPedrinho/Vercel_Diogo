@@ -153,7 +153,7 @@ export const GRUPOS: GrupoTextos[] = [
         rotulo: "Texto de abertura",
         tipo: "paragrafo",
         padrao:
-          "Queremos todo mundo elegante e confortável para celebrar com a gente — a festa vai até tarde e o calor de Fortaleza não tira folga.",
+          "Queremos todo mundo elegante e confortável para celebrar com a gente.",
       },
       {
         chave: "dress_cores",
@@ -163,17 +163,23 @@ export const GRUPOS: GrupoTextos[] = [
         ajuda: "Uma cor por linha: nome | código da cor. Ex.: Azul sereno | #a9b9ca",
       },
       {
+        chave: "dress_paleta_texto",
+        rotulo: "Texto acima da paleta",
+        padrao: "Quer seguir a identidade visual da cerimônia? Inspire-se na nossa paleta de cores.",
+      },
+      {
         chave: "dress_elas",
         rotulo: "Para elas",
         tipo: "paragrafo",
-        padrao:
-          "Vestidos midi ou longos, em tecidos leves. As cores estão liberadas, com exceção do branco. Para quem desejar seguir a identidade visual da cerimônia, segue a nossa paleta de cores.",
+        padrao: "Vestidos midi ou longos\nTecidos leves\nCores liberadas, exceto o branco",
+        ajuda: "Uma dica por linha — cada linha vira um item da lista.",
       },
       {
         chave: "dress_eles",
         rotulo: "Para eles",
         tipo: "paragrafo",
-        padrao: "Recomendamos o uso de calça e camisa social. Blazer é bem-vindo, mas não obrigatório.",
+        padrao: "Calça e camisa social\nBlazer é bem-vindo, mas não obrigatório",
+        ajuda: "Uma dica por linha — cada linha vira um item da lista.",
       },
       {
         chave: "dress_evitar",
