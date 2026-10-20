@@ -145,12 +145,12 @@ const padrinho = (n: number, side: "noiva" | "noivo", name: string, foto: string
 export const PADRINHOS_INICIAIS: Padrinho[] = [
   padrinho(1, "noiva", "Rita & Roberto", "/img/padrinhos/rita-e-roberto.jpg"),
   padrinho(2, "noiva", "Bárbara & Jean"),
-  padrinho(3, "noiva", "Ismênia & José"),
+  padrinho(3, "noiva", "Ismênia & José", "/img/padrinhos/ismenia-e-jose.jpg"),
   padrinho(4, "noiva", "Ludmylla & João Victor", "/img/padrinhos/ludmylla-e-joao-victor.jpg"),
-  padrinho(5, "noivo", "Priscila & Breno"),
+  padrinho(5, "noivo", "Priscila & Breno", "/img/padrinhos/priscila-e-breno.jpg"),
   padrinho(6, "noivo", "Thyago & Gleiciane", "/img/padrinhos/thyago-e-gleiciane.jpg"),
-  padrinho(7, "noivo", "Patrick & Letícia"),
-  padrinho(8, "noivo", "Yuri & Lara"),
+  padrinho(7, "noivo", "Patrick & Letícia", "/img/padrinhos/patrick-e-leticia.jpg"),
+  padrinho(8, "noivo", "Yuri & Lara", "/img/padrinhos/yuri-e-lara.jpg"),
 ];
 
 /** A música escolhida pelos noivos, servida de /public. Uma música enviada

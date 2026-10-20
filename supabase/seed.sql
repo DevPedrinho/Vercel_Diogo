@@ -71,3 +71,7 @@ update public.story_events set image_path = '/img/historia/viagem.jpg' where sor
 update public.story_events set image_path = '/img/casal.png' where sort_order = 5;
 update public.godparents set image_path = '/img/padrinhos/rita-e-roberto.jpg' where name = 'Rita & Roberto';
 update public.story_events set image_path = '/img/historia/juntos.jpg' where sort_order = 3;
+update public.godparents set image_path = '/img/padrinhos/ismenia-e-jose.jpg' where name = 'Ismênia & José';
+update public.godparents set image_path = '/img/padrinhos/priscila-e-breno.jpg' where name = 'Priscila & Breno';
+update public.godparents set image_path = '/img/padrinhos/patrick-e-leticia.jpg' where name = 'Patrick & Letícia';
+update public.godparents set image_path = '/img/padrinhos/yuri-e-lara.jpg' where name = 'Yuri & Lara';
