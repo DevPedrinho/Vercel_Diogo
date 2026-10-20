@@ -166,7 +166,7 @@ function Cartao({ presente, aoPresentear }: { presente: Presente; aoPresentear: 
 
   return (
     <li className="group flex flex-col overflow-hidden border border-ouro/35 bg-papel transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
-      <div className="relative aspect-4/3 w-full overflow-hidden">
+      <div className="relative aspect-[4/5] w-full overflow-hidden">
         <Foto presente={presente} />
         <span className="versalete absolute top-4 left-0 bg-marinho/90 px-3.5 py-1.5 text-[0.7rem] text-papel-claro">
           {presente.category}

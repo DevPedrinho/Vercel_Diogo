@@ -85,6 +85,8 @@ function centavos(v: unknown): number | null {
  */
 export function imagemDaPlanilha(v: unknown): string | null {
   const url = texto(v);
+  // Arte guardada no próprio site (pasta public), como /img/presentes/x.jpg.
+  if (/^\/img\/[\w\/.-]+$/.test(url)) return url;
   if (!/^https?:\/\//i.test(url)) return null;
   const drive = url.match(/drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?(?:export=\w+&)?id=)([\w-]{10,})/);
   if (drive) return `https://drive.google.com/thumbnail?id=${drive[1]}&sz=w1200`;
@@ -101,8 +103,9 @@ export function presenteDaLinha(l: Linha, i: number): Presente | null {
     description: texto(l.descricao) || null,
     category: texto(l.categoria) || "Casa",
     price_cents: centavos(l.valor),
-    image_path: null,
-    image_url: imagemDaPlanilha(l.imagem),
+    // Caminho do próprio site vai em image_path; link externo, em image_url.
+    image_path: imagemDaPlanilha(l.imagem)?.startsWith("/") ? imagemDaPlanilha(l.imagem) : null,
+    image_url: imagemDaPlanilha(l.imagem)?.startsWith("/") ? null : imagemDaPlanilha(l.imagem),
     gift_url: /^https?:\/\//i.test(texto(l.link)) ? texto(l.link) : null,
     // Vazio conta como ativo: só some quem tiver "não" na coluna.
     is_active: ativo === "" || sim(ativo),

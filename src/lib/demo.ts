@@ -9,13 +9,23 @@ import type { EventoHistoria, MusicaDoSite, Padrinho, Presente } from "@/lib/tip
 
 const CRIADO = "2026-10-19T12:00:00Z";
 
+/**
+ * As artes dos presentes que os noivos já criaram, por número da lista.
+ * Ficam em public/img/presentes; quem não tem arte mostra o raminho.
+ */
+export const ARTES_PRESENTES: Record<number, string> = {
+  18: "/img/presentes/nosso-primeiro-cafe-de-casados.jpg",
+  21: "/img/presentes/cinema-sem-sair-de-casa.jpg",
+  29: "/img/presentes/vale-o-primeiro-lugar-na-fila-do-jantar.jpg",
+};
+
 const presente = (n: number, category: string, title: string, reais: number | null, description: string | null): Presente => ({
   id: `inicial-${n}`,
   title,
   description,
   category,
   price_cents: reais === null ? null : reais * 100,
-  image_path: null,
+  image_path: ARTES_PRESENTES[n] ?? null,
   image_url: null,
   // Sem link: o botão Presentear mostra o PIX do casal.
   gift_url: null,
