@@ -144,7 +144,7 @@ const padrinho = (n: number, side: "noiva" | "noivo", name: string, foto: string
 
 export const PADRINHOS_INICIAIS: Padrinho[] = [
   padrinho(1, "noiva", "Rita & Roberto", "/img/padrinhos/rita-e-roberto.jpg"),
-  padrinho(2, "noiva", "Bárbara & Jean"),
+  padrinho(2, "noiva", "Bárbara & Jean", "/img/padrinhos/barbara-e-jean.jpg"),
   padrinho(3, "noiva", "Ismênia & José", "/img/padrinhos/ismenia-e-jose.jpg"),
   padrinho(4, "noiva", "Ludmylla & João Victor", "/img/padrinhos/ludmylla-e-joao-victor.jpg"),
   padrinho(5, "noivo", "Priscila & Breno", "/img/padrinhos/priscila-e-breno.jpg"),

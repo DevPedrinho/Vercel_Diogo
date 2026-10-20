@@ -75,3 +75,4 @@ update public.godparents set image_path = '/img/padrinhos/ismenia-e-jose.jpg' wh
 update public.godparents set image_path = '/img/padrinhos/priscila-e-breno.jpg' where name = 'Priscila & Breno';
 update public.godparents set image_path = '/img/padrinhos/patrick-e-leticia.jpg' where name = 'Patrick & Letícia';
 update public.godparents set image_path = '/img/padrinhos/yuri-e-lara.jpg' where name = 'Yuri & Lara';
+update public.godparents set image_path = '/img/padrinhos/barbara-e-jean.jpg' where name = 'Bárbara & Jean';
