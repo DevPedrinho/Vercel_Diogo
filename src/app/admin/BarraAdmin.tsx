@@ -20,7 +20,8 @@ export function BarraAdmin({ email, demo }: { email: string; demo: boolean }) {
   const router = useRouter();
 
   async function sair() {
-    if (!demo) await criarClienteNavegador().auth.signOut();
+    if (demo) await fetch("/api/sair", { method: "POST" }).catch(() => {});
+    else await criarClienteNavegador().auth.signOut();
     router.push("/");
     router.refresh();
   }
@@ -60,7 +61,7 @@ export function BarraAdmin({ email, demo }: { email: string; demo: boolean }) {
             title="Abrir o site em outra aba"
           >
             <Icone nome="olho" className="h-4 w-4" />
-            <span className="hidden sm:inline">Ver site</span>
+            <span className="hidden whitespace-nowrap sm:inline">Ver site</span>
           </Link>
           <button
             type="button"

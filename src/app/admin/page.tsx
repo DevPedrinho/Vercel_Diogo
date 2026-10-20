@@ -13,7 +13,7 @@ export default async function PainelInicio() {
     carregarRecados(5),
     carregarHistoria(),
     carregarPadrinhos(),
-    carregarConfirmacoes(),
+    carregarConfirmacoes().catch(() => []),
   ]);
   const confirmados = respostas.filter((r) => r.attending).reduce((t, r) => t + 1 + r.companions, 0);
   const ativos = presentes.filter((p) => p.is_active).length;

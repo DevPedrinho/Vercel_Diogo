@@ -15,15 +15,15 @@ export function FormConfirmacao({
   encerrado,
   whatsapp,
   dataExtenso,
-  ativo,
+  fonte,
 }: {
   aberto: boolean;
   prazo: string | null;
   encerrado: string;
   whatsapp: string | null;
   dataExtenso: string;
-  /** false sem Supabase: não há onde guardar a resposta. */
-  ativo: boolean;
+  /** Onde a resposta é guardada; null = ainda não há onde. */
+  fonte: "planilha" | "supabase" | null;
 }) {
   const [nome, setNome] = useState("");
   const [vai, setVai] = useState<"sim" | "nao" | null>(null);
@@ -33,6 +33,8 @@ export function FormConfirmacao({
   const [recado, setRecado] = useState("");
   const [estado, setEstado] = useState<"aberto" | "enviando" | "enviado">("aberto");
   const [erro, setErro] = useState<string | null>(null);
+  // Campo invisível: gente não vê nem preenche; robô de formulário preenche.
+  const [armadilha, setArmadilha] = useState("");
 
   async function enviar(e: FormEvent) {
     e.preventDefault();
@@ -40,22 +42,47 @@ export function FormConfirmacao({
     if (nome.trim().length < 2) return setErro("Escreva seu nome completo.");
     if (!vai) return setErro("Conte pra gente se você vai.");
     if (vai === "sim" && acompanhantes > 0 && !nomesAcomp.trim()) return setErro("Escreva o nome de quem vem com você.");
-    if (!ativo) return setErro("As confirmações abrem em instantes. Tente de novo mais tarde, por favor.");
+    if (!fonte) return setErro("As confirmações abrem em instantes. Tente de novo mais tarde, por favor.");
 
     setEstado("enviando");
-    const { error } = await criarClienteNavegador()
-      .from("rsvps")
-      .insert({
-        name: nome.trim().slice(0, 120),
-        attending: vai === "sim",
-        companions: vai === "sim" ? acompanhantes : 0,
-        companion_names: vai === "sim" && acompanhantes > 0 ? nomesAcomp.trim().slice(0, 600) : null,
-        phone: telefone.trim().slice(0, 30) || null,
-        message: recado.trim().slice(0, 600) || null,
-      });
-    if (error) {
+    const qtd = vai === "sim" ? acompanhantes : 0;
+    let falha: string | null = null;
+    if (fonte === "planilha") {
+      try {
+        const resposta = await fetch("/api/confirmar", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            nome: nome.trim(),
+            vai: vai === "sim",
+            acompanhantes: qtd,
+            nomesAcompanhantes: qtd > 0 ? nomesAcomp.trim() : "",
+            whatsapp: telefone.trim(),
+            recado: recado.trim(),
+            site: armadilha,
+          }),
+        });
+        const json = (await resposta.json().catch(() => ({}))) as { ok?: boolean; erro?: string };
+        if (!json.ok) falha = json.erro || "Não deu para enviar agora. Tente de novo em instantes.";
+      } catch {
+        falha = "Não deu para enviar agora. Confira a conexão e tente de novo.";
+      }
+    } else {
+      const { error } = await criarClienteNavegador()
+        .from("rsvps")
+        .insert({
+          name: nome.trim().slice(0, 120),
+          attending: vai === "sim",
+          companions: qtd,
+          companion_names: qtd > 0 ? nomesAcomp.trim().slice(0, 600) : null,
+          phone: telefone.trim().slice(0, 30) || null,
+          message: recado.trim().slice(0, 600) || null,
+        });
+      if (error) falha = "Não deu para enviar agora. Confira a conexão e tente de novo.";
+    }
+    if (falha) {
       setEstado("aberto");
-      return setErro("Não deu para enviar agora. Confira a conexão e tente de novo.");
+      return setErro(falha);
     }
     setEstado("enviado");
   }
@@ -98,7 +125,7 @@ export function FormConfirmacao({
   }
 
   return (
-    <form onSubmit={enviar} className={`${cartao} space-y-7`}>
+    <form onSubmit={enviar} className={`${cartao} relative space-y-7`}>
       {prazo && (
         <p className="versalete titulo-serif text-center text-xs font-semibold text-ouro-escuro">
           Confirme até {prazo}
@@ -184,6 +211,13 @@ export function FormConfirmacao({
       <div>
         <Rotulo htmlFor="r-recado">Um recado para os noivos (opcional)</Rotulo>
         <textarea id="r-recado" rows={3} className="campo resize-y" maxLength={600} value={recado} onChange={(e) => setRecado(e.target.value)} />
+      </div>
+
+      <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
+        <label>
+          Site
+          <input tabIndex={-1} autoComplete="off" value={armadilha} onChange={(e) => setArmadilha(e.target.value)} />
+        </label>
       </div>
 
       {erro && <Aviso tipo="erro">{erro}</Aviso>}

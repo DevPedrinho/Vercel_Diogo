@@ -2,6 +2,7 @@ import "server-only";
 import { criarClienteServidor } from "@/lib/supabase/servidor";
 import { supabaseConfigurado } from "@/lib/supabase/ativo";
 import { urlDoSite } from "@/lib/storage";
+import { ABAS, confirmacaoDaLinha, lerAba, planilhaConfigurada, presenteDaLinha } from "@/lib/planilha";
 import { completarTextos, type Textos } from "@/lib/textos";
 import { ARQUIVO_MUSICA_PADRAO, HISTORIA_INICIAL, MUSICA_PADRAO, PADRINHOS_INICIAIS, PRESENTES_INICIAIS } from "@/lib/demo";
 import type { Confirmacao, EventoHistoria, MusicaDoSite, Padrinho, Presente } from "@/lib/tipos";
@@ -99,6 +100,20 @@ export async function carregarTextosSalvos(): Promise<Record<string, string>> {
 }
 
 export async function carregarPresentes({ todos = false } = {}): Promise<Presente[]> {
+  // A planilha manda quando está ligada: os noivos editam presentes e fotos
+  // direto nela. Cache curto, para a página não depender do Google a cada
+  // visita; uma mudança na planilha aparece em até 1 minuto.
+  if (planilhaConfigurada) {
+    try {
+      const linhas = await lerAba(ABAS.presentes, 60);
+      const lista = linhas.map(presenteDaLinha).filter((p): p is Presente => p !== null);
+      const visiveis = todos ? lista : lista.filter((p) => p.is_active);
+      // Planilha vazia (recém-criada) não esvazia o site.
+      return lista.length > 0 ? visiveis : PRESENTES_INICIAIS;
+    } catch {
+      return PRESENTES_INICIAIS;
+    }
+  }
   if (!supabaseConfigurado) return PRESENTES_INICIAIS;
   try {
     const supabase = await criarClienteServidor();
@@ -167,6 +182,15 @@ export function faixaDoSite(musica: MusicaDoSite): FaixaDoSite | null {
 
 /** As respostas da confirmação de presença (só os noivos conseguem ler). */
 export async function carregarConfirmacoes(): Promise<Confirmacao[]> {
+  if (planilhaConfigurada) {
+    // Sem try: se o Google falhar, o painel mostra o erro em vez de "zero
+    // confirmações", que seria mentira.
+    const linhas = await lerAba(ABAS.confirmacoes);
+    return linhas
+      .map(confirmacaoDaLinha)
+      .filter((c): c is Confirmacao => c !== null)
+      .reverse();
+  }
   if (!supabaseConfigurado) return [];
   try {
     const supabase = await criarClienteServidor();

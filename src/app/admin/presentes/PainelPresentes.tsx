@@ -28,10 +28,13 @@ export function PainelPresentes({
   presentes,
   recados,
   demo,
+  planilha,
 }: {
   presentes: Presente[];
   recados: RecadoComPresente[];
   demo: boolean;
+  /** Com a planilha ligada, os presentes são editados nela, não aqui. */
+  planilha: { link: string | null } | null;
 }) {
   const router = useRouter();
   const [form, setForm] = useState(VAZIO);
@@ -141,6 +144,18 @@ export function PainelPresentes({
 
   function apagarRecado(r: RecadoComPresente) {
     if (!confirm(`Apagar o recado de ${r.name}?`)) return;
+    if (planilha) {
+      setErro(null);
+      void fetch("/api/admin/apagar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ aba: "recados", id: r.id }),
+      }).then((x) => {
+        if (!x.ok) setErro("Não deu para apagar agora. Tente de novo.");
+        router.refresh();
+      });
+      return;
+    }
     void executar(() => supabase().from("gift_messages").delete().eq("id", r.id));
   }
 
@@ -148,6 +163,27 @@ export function PainelPresentes({
 
   return (
     <div className="space-y-10">
+      {planilha ? (
+        <Bloco titulo="Os presentes ficam na planilha" descricao="Para incluir, mudar, esconder ou pôr foto num presente, edite a aba Presentes. O site atualiza em até 1 minuto.">
+          <ul className="space-y-2 text-base text-marinho">
+            <li><strong className="font-medium">imagem</strong> — cole o link da foto. Serve link de loja ou de foto do Google Drive (compartilhada como “qualquer pessoa com o link”).</li>
+            <li><strong className="font-medium">valor</strong> — só o número, como 450 ou 1250,50. Vazio = valor livre.</li>
+            <li><strong className="font-medium">ativo</strong> — escreva “não” para esconder o presente sem apagar a linha.</li>
+            <li><strong className="font-medium">link</strong> — opcional; vazio = o convidado paga pelo PIX do casal.</li>
+          </ul>
+          {erro && <div className="mt-4"><Aviso tipo="erro">{erro}</Aviso></div>}
+          {planilha.link && (
+            <a
+              href={planilha.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="versalete titulo-serif mt-6 inline-flex min-h-11 items-center rounded-sm bg-marinho px-6 text-xs font-semibold text-papel-claro hover:bg-marinho-escuro"
+            >
+              Abrir a planilha
+            </a>
+          )}
+        </Bloco>
+      ) : (
       <Bloco id="formulario" titulo={editando ? "Editar presente" : "Adicionar presente"}>
         <form onSubmit={salvar} className="space-y-5">
           {erro && <Aviso tipo="erro">{erro}</Aviso>}
@@ -259,8 +295,9 @@ export function PainelPresentes({
           </div>
         </form>
       </Bloco>
+      )}
 
-      <Bloco titulo="Presentes cadastrados" descricao="No site, a lista aparece do menor para o maior valor. As setas só desempatam presentes de mesmo valor.">
+      <Bloco titulo="Presentes cadastrados" descricao={planilha ? "Como estão agora na planilha. No site, a lista aparece do menor para o maior valor." : "No site, a lista aparece do menor para o maior valor. As setas só desempatam presentes de mesmo valor."}>
         {presentes.length === 0 ? (
           <p className="text-base text-azul italic">Nenhum presente cadastrado ainda.</p>
         ) : (
@@ -272,6 +309,7 @@ export function PainelPresentes({
                   key={p.id}
                   className={`flex flex-wrap items-center gap-4 rounded-sm border border-ouro/25 bg-papel px-4 py-3 ${p.is_active ? "" : "opacity-55"}`}
                 >
+                  {!planilha && (
                   <div className="flex flex-col">
                     <button
                       type="button"
@@ -292,6 +330,7 @@ export function PainelPresentes({
                       <Icone nome="seta_baixo" className="h-4 w-4" />
                     </button>
                   </div>
+                  )}
                   <div className="h-14 w-14 shrink-0 overflow-hidden rounded-sm border border-ouro/25 bg-nevoa">
                     {foto ? (
                       // eslint-disable-next-line @next/next/no-img-element
@@ -310,6 +349,7 @@ export function PainelPresentes({
                       {formatarPreco(p.price_cents) ?? "Valor livre"} · {p.gift_url ?? "PIX do casal"}
                     </p>
                   </div>
+                  {!planilha && (
                   <div className="flex shrink-0 gap-1">
                     <button type="button" onClick={() => editar(p)} className="min-h-11 px-2 text-base text-marinho underline underline-offset-4">
                       Editar
@@ -321,6 +361,7 @@ export function PainelPresentes({
                       Remover
                     </button>
                   </div>
+                  )}
                 </li>
               );
             })}

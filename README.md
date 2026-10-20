@@ -38,6 +38,14 @@ painel abre sem login, só para olhar — os botões de salvar avisam que falta
 conectar o banco. **A confirmação de presença e os recados só são guardados
 com o Supabase ligado.**
 
+## Google Planilhas (presentes, confirmações e recados)
+
+Sem Supabase, o site usa uma planilha do Google como banco de dados: os
+presentes (com as fotos) saem dela, e a confirmação de presença e os recados
+gravam nela. O painel lê as confirmações de lá e entra com a senha de
+`ADMIN_SENHA`. Passo a passo em
+[`integracoes/google-planilhas/COMO-INSTALAR.md`](integracoes/google-planilhas/COMO-INSTALAR.md).
+
 ## Colocando no ar
 
 1. **Supabase** — crie um projeto e rode, em ordem, os arquivos de `supabase/migrations/`

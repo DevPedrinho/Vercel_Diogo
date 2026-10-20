@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { carregarCasamento, carregarPresentes } from "@/lib/conteudo";
 import { supabaseConfigurado } from "@/lib/supabase/ativo";
+import { planilhaConfigurada } from "@/lib/planilha";
 import { Secao } from "@/components/Secao";
 import { BotaoLink } from "@/components/Botao";
 import { Aquarela, Divisor, Ramo } from "@/components/Ornamentos";
@@ -34,7 +35,7 @@ export default async function Presentes() {
           presentes={presentes}
           obrigado={c.presentes_obrigado}
           pix={{ chave: c.pix_chave, titular: c.pix_titular, banco: c.pix_banco }}
-          salvarRecados={supabaseConfigurado}
+          fonteRecados={planilhaConfigurada ? "planilha" : supabaseConfigurado ? "supabase" : null}
         />
       </Secao>
 

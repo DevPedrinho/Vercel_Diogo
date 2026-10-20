@@ -32,7 +32,17 @@ function paraCsv(linhas: Confirmacao[]) {
   return "﻿" + [cabecalho.map(cel).join(";"), ...corpo].join("\r\n");
 }
 
-export function PainelConfirmacoes({ respostas, demo }: { respostas: Confirmacao[]; demo: boolean }) {
+export function PainelConfirmacoes({
+  respostas,
+  fonte,
+  linkPlanilha,
+  erroLeitura,
+}: {
+  respostas: Confirmacao[];
+  fonte: "planilha" | "supabase" | null;
+  linkPlanilha: string | null;
+  erroLeitura: string | null;
+}) {
   const router = useRouter();
   const [filtro, setFiltro] = useState<Filtro>("todos");
   const [busca, setBusca] = useState("");
@@ -63,8 +73,20 @@ export function PainelConfirmacoes({ respostas, demo }: { respostas: Confirmacao
   async function apagar(r: Confirmacao) {
     if (!confirm(`Apagar a resposta de ${r.name}? Use para respostas repetidas.`)) return;
     setErro(null);
-    const { error } = await criarClienteNavegador().from("rsvps").delete().eq("id", r.id);
-    if (error) setErro("Não deu para apagar agora. Tente de novo.");
+    let falhou = false;
+    if (fonte === "planilha") {
+      falhou = !(await fetch("/api/admin/apagar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ aba: "confirmacoes", id: r.id }),
+      })
+        .then((x) => x.ok)
+        .catch(() => false));
+    } else {
+      const { error } = await criarClienteNavegador().from("rsvps").delete().eq("id", r.id);
+      falhou = Boolean(error);
+    }
+    if (falhou) setErro("Não deu para apagar agora. Tente de novo.");
     router.refresh();
   }
 
@@ -77,12 +99,13 @@ export function PainelConfirmacoes({ respostas, demo }: { respostas: Confirmacao
 
   return (
     <div className="space-y-8">
-      {demo && (
+      {!fonte && (
         <Aviso tipo="info">
-          No modo demonstração o formulário não guarda respostas. Conectem o Supabase antes de divulgar o link de
+          O formulário ainda não tem onde guardar as respostas. Liguem a planilha do Google antes de divulgar o link de
           confirmação.
         </Aviso>
       )}
+      {erroLeitura && <Aviso tipo="erro">{erroLeitura}</Aviso>}
       {erro && <Aviso tipo="erro">{erro}</Aviso>}
 
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
@@ -98,9 +121,21 @@ export function PainelConfirmacoes({ respostas, demo }: { respostas: Confirmacao
         titulo="Respostas"
         descricao="Mais novas primeiro. Se alguém responder duas vezes, apague a repetida."
         acao={
-          <Botao type="button" variante="contorno" onClick={baixar} disabled={respostas.length === 0}>
-            Baixar planilha
-          </Botao>
+          <div className="flex flex-wrap gap-2">
+            {linkPlanilha && (
+              <a
+                href={linkPlanilha}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="versalete titulo-serif inline-flex min-h-11 items-center rounded-sm border border-marinho/45 px-5 text-xs font-semibold text-marinho hover:bg-marinho hover:text-papel-claro"
+              >
+                Abrir no Google Planilhas
+              </a>
+            )}
+            <Botao type="button" variante="contorno" onClick={baixar} disabled={respostas.length === 0}>
+              Baixar CSV
+            </Botao>
+          </div>
         }
       >
         <div className="mb-5 flex flex-wrap items-center gap-3">

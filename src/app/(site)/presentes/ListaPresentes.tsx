@@ -33,13 +33,13 @@ export function ListaPresentes({
   presentes,
   obrigado,
   pix,
-  salvarRecados,
+  fonteRecados,
 }: {
   presentes: Presente[];
   obrigado: string;
   pix: DadosPix;
-  /** false no modo demonstração: o recado não tem para onde ir. */
-  salvarRecados: boolean;
+  /** Onde o recado é guardado; null = em lugar nenhum (o formulário some). */
+  fonteRecados: "planilha" | "supabase" | null;
 }) {
   const categorias = useMemo(() => {
     const unicas = Array.from(new Set(presentes.map((p) => p.category))).sort((a, b) => a.localeCompare(b, "pt-BR"));
@@ -124,7 +124,7 @@ export function ListaPresentes({
           presente={escolhido}
           obrigado={obrigado}
           pix={pix}
-          salvarRecados={salvarRecados}
+          fonteRecados={fonteRecados}
           aoFechar={() => setEscolhido(null)}
         />
       )}
@@ -133,15 +133,17 @@ export function ListaPresentes({
 }
 
 function Foto({ presente }: { presente: Presente }) {
+  const [quebrou, setQuebrou] = useState(false);
   const imagem = urlDoSite(presente.image_path) ?? linkSeguro(presente.image_url);
-  if (imagem) {
+  if (imagem && !quebrou) {
     return (
       <Image
         src={imagem}
         alt={presente.title}
         fill
         sizes="(min-width: 1024px) 22rem, (min-width: 640px) 45vw, 90vw"
-        className="object-cover"
+        className="object-cover transition-transform duration-500 group-hover:scale-105"
+        onError={() => setQuebrou(true)}
       />
     );
   }
@@ -205,13 +207,13 @@ function Agradecimento({
   presente,
   obrigado,
   pix,
-  salvarRecados,
+  fonteRecados,
   aoFechar,
 }: {
   presente: Presente;
   obrigado: string;
   pix: DadosPix;
-  salvarRecados: boolean;
+  fonteRecados: "planilha" | "supabase" | null;
   aoFechar: () => void;
 }) {
   const [nome, setNome] = useState("");
@@ -248,8 +250,19 @@ function Agradecimento({
     e.preventDefault();
     if (!nome.trim()) return;
     setEstado("enviando");
-    const supabase = criarClienteNavegador();
-    const { error } = await supabase.from("gift_messages").insert({
+    if (fonteRecados === "planilha") {
+      const ok = await fetch("/api/recado", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ presente: presente.title, nome: nome.trim(), recado: recado.trim() }),
+      })
+        .then((r) => r.json())
+        .then((j: { ok?: boolean }) => Boolean(j.ok))
+        .catch(() => false);
+      setEstado(ok ? "enviado" : "erro");
+      return;
+    }
+    const { error } = await criarClienteNavegador().from("gift_messages").insert({
       gift_id: presente.id,
       name: nome.trim().slice(0, 80),
       message: recado.trim().slice(0, 500) || null,
@@ -312,7 +325,7 @@ function Agradecimento({
 
         {estado === "enviado" ? (
           <p className="titulo-serif mt-8 text-xl text-marinho italic">Recado entregue aos noivos. 💙</p>
-        ) : !salvarRecados ? null : (
+        ) : !fonteRecados ? null : (
           <form onSubmit={enviar} className="mt-7 space-y-4 text-left">
             <p className="text-center text-sm text-azul">
               {porPix ? (

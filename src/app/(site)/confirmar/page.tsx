@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { carregarCasamento, prazoDaConfirmacao } from "@/lib/conteudo";
 import { supabaseConfigurado } from "@/lib/supabase/ativo";
+import { planilhaConfigurada } from "@/lib/planilha";
 import { CabecalhoPagina } from "@/components/CabecalhoPagina";
 import { FormConfirmacao } from "./FormConfirmacao";
 
@@ -24,7 +25,7 @@ export default async function Confirmar() {
           encerrado={c.rsvp_encerrado}
           whatsapp={whats ? `https://wa.me/55${whats}` : null}
           dataExtenso={`${c.dataExtenso} · ${c.hora}`}
-          ativo={supabaseConfigurado}
+          fonte={planilhaConfigurada ? "planilha" : supabaseConfigurado ? "supabase" : null}
         />
       </section>
     </>
