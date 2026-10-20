@@ -69,3 +69,4 @@ update public.story_events set image_path = '/img/historia/o-comeco.jpg' where s
 update public.story_events set image_path = '/img/historia/vercia-e-diogo.jpg' where sort_order = 2;
 update public.story_events set image_path = '/img/historia/viagem.jpg' where sort_order = 4;
 update public.story_events set image_path = '/img/casal.png' where sort_order = 5;
+update public.godparents set image_path = '/img/padrinhos/rita-e-roberto.jpg' where name = 'Rita & Roberto';

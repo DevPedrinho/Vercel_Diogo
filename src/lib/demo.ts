@@ -106,7 +106,7 @@ const padrinho = (n: number, side: "noiva" | "noivo", name: string, foto: string
 });
 
 export const PADRINHOS_INICIAIS: Padrinho[] = [
-  padrinho(1, "noiva", "Rita & Roberto"),
+  padrinho(1, "noiva", "Rita & Roberto", "/img/padrinhos/rita-e-roberto.jpg"),
   padrinho(2, "noiva", "Bárbara & Jean"),
   padrinho(3, "noiva", "Ismênia & José"),
   padrinho(4, "noiva", "Ludmylla & João Victor", "/img/padrinhos/ludmylla-e-joao-victor.jpg"),
