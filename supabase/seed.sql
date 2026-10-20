@@ -61,3 +61,8 @@ insert into public.story_events (date_label, title, description, sort_order) val
 
 -- A música escolhida pelos noivos (o arquivo fica em public/audio).
 update public.site_music set title = 'Partilhar', artist = 'Rubel' where id;
+
+-- Fotos que já vieram com o site (pasta public).
+update public.godparents set image_path = '/img/padrinhos/ludmylla-e-joao-victor.jpg' where name = 'Ludmylla & João Victor';
+update public.godparents set image_path = '/img/padrinhos/thyago-e-gleiciane.jpg' where name = 'Thyago & Gleiciane';
+update public.story_events set image_path = '/img/historia/vercia-e-diogo.jpg' where sort_order = 1;

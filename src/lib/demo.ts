@@ -66,31 +66,31 @@ export const PRESENTES_INICIAIS: Presente[] = [
   presente(39, "Cota divertida", "Minoxidil para o noivo", 250, "Para ajudar o noivo a cuidar do visual e manter a esperança de uma cabeleira de respeito no grande dia! 😂"),
 ];
 
-const capitulo = (n: number, date_label: string, title: string, description: string): EventoHistoria => ({
+const capitulo = (n: number, date_label: string, title: string, description: string, foto: string | null = null): EventoHistoria => ({
   id: `inicial-h${n}`,
   title,
   date_label,
   description,
-  image_path: null,
+  image_path: foto,
   sort_order: n,
   created_at: CRIADO,
 });
 
 export const HISTORIA_INICIAL: EventoHistoria[] = [
-  capitulo(1, "2022", "Um match inesperado", "Tudo começou com uma conversa inesperada, daquelas que a gente nem imagina onde podem chegar."),
+  capitulo(1, "2022", "Um match inesperado", "Tudo começou com uma conversa inesperada, daquelas que a gente nem imagina onde podem chegar.", "/img/historia/vercia-e-diogo.jpg"),
   capitulo(2, "Amor e companheirismo", "Do match ao amor", "O que começou com um match se transformou em amor e companheirismo."),
   capitulo(3, "Um lar compartilhado", "Nosso lar", "Dividimos a mesma casa, a mesma rotina e os mesmos sonhos."),
   capitulo(4, "Quatro anos juntos", "Sonhos e viagens", "Quatro anos de sonhos, viagens e tantas histórias para contar."),
   capitulo(5, "16 de janeiro de 2027", "O nosso sim", "Diante de Deus e de quem amamos, vamos celebrar tudo o que nos trouxe até aqui e dizer sim a uma vida inteira juntos — e não poderíamos imaginar esse dia sem você."),
 ];
 
-const padrinho = (n: number, side: "noiva" | "noivo", name: string): Padrinho => ({
+const padrinho = (n: number, side: "noiva" | "noivo", name: string, foto: string | null = null): Padrinho => ({
   id: `inicial-p${n}`,
   name,
   role: "Padrinhos",
   side,
   description: null,
-  image_path: null,
+  image_path: foto,
   sort_order: n,
   created_at: CRIADO,
 });
@@ -99,9 +99,9 @@ export const PADRINHOS_INICIAIS: Padrinho[] = [
   padrinho(1, "noiva", "Rita & Roberto"),
   padrinho(2, "noiva", "Bárbara & Jean"),
   padrinho(3, "noiva", "Ismênia & José"),
-  padrinho(4, "noiva", "Ludmylla & João Victor"),
+  padrinho(4, "noiva", "Ludmylla & João Victor", "/img/padrinhos/ludmylla-e-joao-victor.jpg"),
   padrinho(5, "noivo", "Priscila & Breno"),
-  padrinho(6, "noivo", "Thyago & Gleiciane"),
+  padrinho(6, "noivo", "Thyago & Gleiciane", "/img/padrinhos/thyago-e-gleiciane.jpg"),
   padrinho(7, "noivo", "Patrick & Letícia"),
   padrinho(8, "noivo", "Yuri & Lara"),
 ];
