@@ -1,5 +1,6 @@
 import "server-only";
 import type { Confirmacao, Presente } from "@/lib/tipos";
+import { ARTES_PRESENTES } from "@/lib/demo";
 
 /**
  * Google Planilhas como banco de dados.
@@ -97,6 +98,9 @@ export function presenteDaLinha(l: Linha, i: number): Presente | null {
   const titulo = texto(l.titulo);
   if (!titulo) return null;
   const ativo = texto(l.ativo);
+  // Coluna imagem vazia: usa a arte do próprio site pelo número do presente (p07 → 7).
+  const numero = Number(texto(l.id).match(/^p(\d+)$/i)?.[1]);
+  const imagem = imagemDaPlanilha(l.imagem) ?? ARTES_PRESENTES[numero] ?? null;
   return {
     id: texto(l.id) || `linha-${i + 2}`,
     title: titulo,
@@ -104,8 +108,8 @@ export function presenteDaLinha(l: Linha, i: number): Presente | null {
     category: texto(l.categoria) || "Casa",
     price_cents: centavos(l.valor),
     // Caminho do próprio site vai em image_path; link externo, em image_url.
-    image_path: imagemDaPlanilha(l.imagem)?.startsWith("/") ? imagemDaPlanilha(l.imagem) : null,
-    image_url: imagemDaPlanilha(l.imagem)?.startsWith("/") ? null : imagemDaPlanilha(l.imagem),
+    image_path: imagem?.startsWith("/") ? imagem : null,
+    image_url: imagem && !imagem.startsWith("/") ? imagem : null,
     gift_url: /^https?:\/\//i.test(texto(l.link)) ? texto(l.link) : null,
     // Vazio conta como ativo: só some quem tiver "não" na coluna.
     is_active: ativo === "" || sim(ativo),

@@ -10,13 +10,50 @@ import type { EventoHistoria, MusicaDoSite, Padrinho, Presente } from "@/lib/tip
 const CRIADO = "2026-10-19T12:00:00Z";
 
 /**
- * As artes dos presentes que os noivos já criaram, por número da lista.
- * Ficam em public/img/presentes; quem não tem arte mostra o raminho.
+ * A arte ilustrada de cada presente, por número da lista (p01 = 1).
+ * Ficam em public/img/presentes. As 3 primeiras (18, 21 e 29) foram feitas pelos noivos;
+ * as outras 36 seguem o mesmo estilo. Quem não tem arte mostra o raminho.
  */
 export const ARTES_PRESENTES: Record<number, string> = {
+  1: "/img/presentes/aparelho-de-jantar-dos-sonhos.jpg",
+  2: "/img/presentes/faqueiro-tramontina.jpg",
+  3: "/img/presentes/fogao-para-as-aventuras-culinarias.jpg",
+  4: "/img/presentes/gelagua-para-refrescar-a-vida.jpg",
+  5: "/img/presentes/ar-condicionado-para-noites-tranquilas.jpg",
+  6: "/img/presentes/cortinas-blackout.jpg",
+  7: "/img/presentes/enxoval-de-cama-dos-sonhos.jpg",
+  8: "/img/presentes/jogo-de-panelas.jpg",
+  9: "/img/presentes/depurador.jpg",
+  10: "/img/presentes/torradeira-do-cafe-da-manha.jpg",
+  11: "/img/presentes/jogo-de-tacas-e-copos.jpg",
+  12: "/img/presentes/panela-de-pressao-eletrica.jpg",
+  13: "/img/presentes/1-parcela-da-lava-e-seca.jpg",
+  14: "/img/presentes/ajuda-na-1-viagem-internacional-do-casal.jpg",
+  15: "/img/presentes/luminarias-para-noites-aconchegantes.jpg",
+  16: "/img/presentes/jogo-de-toalhas-macias.jpg",
+  17: "/img/presentes/fundo-para-a-geladeira-dos-sonhos.jpg",
   18: "/img/presentes/nosso-primeiro-cafe-de-casados.jpg",
+  19: "/img/presentes/vale-jantar-romantico.jpg",
+  20: "/img/presentes/patrocine-nossa-proxima-viagem.jpg",
   21: "/img/presentes/cinema-sem-sair-de-casa.jpg",
+  22: "/img/presentes/1-dose-de-monjaro-pra-noiva.jpg",
+  23: "/img/presentes/dia-de-descanso-dos-recem-casados.jpg",
+  24: "/img/presentes/noite-da-pizza.jpg",
+  25: "/img/presentes/um-passeio-surpresa.jpg",
+  26: "/img/presentes/vale-um-churrasco-na-nossa-casa.jpg",
+  27: "/img/presentes/fundo-para-nossas-disputas-de-jogos.jpg",
+  28: "/img/presentes/cafe-da-manha-na-cama.jpg",
   29: "/img/presentes/vale-o-primeiro-lugar-na-fila-do-jantar.jpg",
+  30: "/img/presentes/uma-escapadinha-a-dois.jpg",
+  31: "/img/presentes/ajuda-para-organizar-a-casa.jpg",
+  32: "/img/presentes/anti-tpm.jpg",
+  33: "/img/presentes/paz-na-escolha-do-filme.jpg",
+  34: "/img/presentes/fundo-contra-a-louca-acumulada.jpg",
+  35: "/img/presentes/mala-pronta-para-novas-aventuras.jpg",
+  36: "/img/presentes/nosso-lar-nosso-refugio.jpg",
+  37: "/img/presentes/fundo-para-realizar-um-sonho.jpg",
+  38: "/img/presentes/presente-para-nossa-vida-inteira.jpg",
+  39: "/img/presentes/minoxidil-para-o-noivo.jpg",
 };
 
 const presente = (n: number, category: string, title: string, reais: number | null, description: string | null): Presente => ({
