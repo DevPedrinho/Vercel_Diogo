@@ -20,7 +20,7 @@ export const planilhaConfigurada = Boolean(URL_SCRIPT && TOKEN);
 /** O endereço da planilha para abrir no navegador (só para os botões do painel). */
 export const LINK_PLANILHA =
   process.env.GOOGLE_PLANILHA_LINK ||
-  "https://docs.google.com/spreadsheets/d/1jpi0I3v17iNToIvmmS0RWBRsON1M_MB-e6FrlsxhBz4/edit";
+  "https://docs.google.com/spreadsheets/d/1F-ybmBle0v0zi6gR8cQ1CW27dWJp2sRPH1LYd3KSOSA/edit";
 
 export const ABAS = {
   presentes: "Presentes",

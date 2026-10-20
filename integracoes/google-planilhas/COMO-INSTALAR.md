@@ -4,7 +4,7 @@ Presentes, confirmações de presença e recados ficam numa planilha do Google.
 O site lê e grava nela por um pequeno script (Apps Script) publicado dentro
 da própria planilha.
 
-Planilha: **Casamento Vércia e Diogo - dados do site** (no Google Drive do Pedro).
+Planilha: [**Vercia e Diogo**](https://docs.google.com/spreadsheets/d/1F-ybmBle0v0zi6gR8cQ1CW27dWJp2sRPH1LYd3KSOSA/edit) (no Google Drive do Pedro).
 
 ## Instalar (uma vez só, ~5 minutos)
 
@@ -16,8 +16,8 @@ Planilha: **Casamento Vércia e Diogo - dados do site** (no Google Drive do Pedr
    O Google pede autorização: escolha sua conta → *Avançado* → *Acessar
    (não seguro)* → *Permitir*. (O aviso aparece porque o script é seu e não
    foi publicado na loja do Google; ele só mexe nesta planilha.)
-   Ao terminar, a planilha tem as abas **Presentes**, **Confirmações** e
-   **Recados**.
+   Ao terminar, a planilha tem as abas **Presentes** (já com os 39 presentes),
+   **Confirmações** e **Recados**.
 5. **Implantar → Nova implantação** → engrenagem → **App da Web**.
    - Executar como: **Eu**
    - Quem pode acessar: **Qualquer pessoa**
