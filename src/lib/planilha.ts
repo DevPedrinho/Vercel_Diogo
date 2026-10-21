@@ -105,7 +105,7 @@ export function presenteDaLinha(l: Linha, i: number): Presente | null {
     id: texto(l.id) || `linha-${i + 2}`,
     title: titulo,
     description: texto(l.descricao) || null,
-    category: texto(l.categoria) || "Casa",
+    category: texto(l.categoria) || "Casa e conforto",
     price_cents: centavos(l.valor),
     // Caminho do próprio site vai em image_path; link externo, em image_url.
     image_path: imagem?.startsWith("/") ? imagem : null,

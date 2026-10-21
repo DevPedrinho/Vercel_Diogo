@@ -15,7 +15,7 @@ import { UploadImagem } from "@/components/UploadImagem";
 const VAZIO = {
   title: "",
   description: "",
-  category: "Casa",
+  category: "Casa e conforto",
   preco: "",
   image_path: "",
   image_url: "",
@@ -44,7 +44,7 @@ export function PainelPresentes({
   const [salvando, setSalvando] = useState(false);
 
   const categorias = useMemo(
-    () => Array.from(new Set(["Casa", "Lua de Mel", "Cota divertida", ...presentes.map((p) => p.category)])),
+    () => Array.from(new Set(["Cozinha", "Casa e conforto", "Momentos a dois", "Viagens e sonhos", "Cotas divertidas", ...presentes.map((p) => p.category)])),
     [presentes],
   );
 
@@ -87,7 +87,7 @@ export function PainelPresentes({
     const dados = {
       title: form.title.trim(),
       description: form.description.trim() || null,
-      category: form.category.trim() || "Casa",
+      category: form.category.trim() || "Casa e conforto",
       price_cents: centavos,
       image_path: form.image_path || null,
       image_url: form.image_url.trim() || null,
