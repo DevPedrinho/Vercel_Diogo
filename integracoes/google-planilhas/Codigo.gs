@@ -28,7 +28,7 @@ var CABECALHOS = {
 /** A lista da planilha dos noivos: entra na aba Presentes quando ela é criada. */
 var PRESENTES_INICIAIS = [
   ["p01", "Aparelho de jantar dos sonhos", "Cozinha", 450, "Para receber a família e os amigos com uma mesa linda.", "/img/presentes/aparelho-de-jantar-dos-sonhos-v2.jpg", "", "sim", 1],
-  ["p02", "Faqueiro Tramontina", "Cozinha", 350, "Para nossas refeições, dos almoços simples aos jantares especiais.", "/img/presentes/faqueiro-tramontina.jpg", "", "sim", 2],
+  ["p02", "Faqueiro Tramontina", "Cozinha", 350, "Para nossas refeições, dos almoços simples aos jantares especiais.", "/img/presentes/faqueiro-tramontina-v2.jpg", "", "sim", 2],
   ["p03", "Fogão para as aventuras culinárias", "Cozinha", 1400, "Para preparar nossas receitas favoritas e alimentar muitos momentos felizes.", "/img/presentes/fogao-para-as-aventuras-culinarias.jpg", "", "sim", 3],
   ["p04", "Gelágua para refrescar a vida", "Cozinha", 450, "Porque amor é bom, mas água gelada também é indispensável!", "/img/presentes/gelagua-para-refrescar-a-vida-v2.jpg", "", "sim", 4],
   ["p05", "Ar-condicionado para noites tranquilas", "Casa e conforto", 1600, "Para dormir juntinhos, com conforto e sem disputar o ventilador.", "/img/presentes/ar-condicionado-para-noites-tranquilas.jpg", "", "sim", 5],
@@ -37,11 +37,11 @@ var PRESENTES_INICIAIS = [
   ["p08", "Jogo de panelas", "Cozinha", 650, "Para nossas experiências gastronômicas, inclusive as que derem errado.", "/img/presentes/jogo-de-panelas.jpg", "", "sim", 8],
   ["p09", "Depurador", "Cozinha", 450, "Para uma cozinha sem fumaça e sem estresse.", "/img/presentes/depurador-v2.jpg", "", "sim", 9],
   ["p10", "Torradeira do café da manhã", "Cozinha", 180, "Para nossas manhãs começarem com pão quentinho.", "/img/presentes/torradeira-do-cafe-da-manha.jpg", "", "sim", 10],
-  ["p11", "Jogo de taças e copos", "Cozinha", 300, "Para brindar às pequenas e grandes conquistas.", "/img/presentes/jogo-de-tacas-e-copos.jpg", "", "sim", 11],
+  ["p11", "Jogo de taças e copos", "Cozinha", 300, "Para brindar às pequenas e grandes conquistas.", "/img/presentes/jogo-de-tacas-e-copos-v2.jpg", "", "sim", 11],
   ["p12", "Panela de pressão elétrica", "Cozinha", 500, "Para preparar refeições deliciosas sem passar horas na cozinha.", "/img/presentes/panela-de-pressao-eletrica.jpg", "", "sim", 12],
   ["p13", "1 Parcela da Lava e Seca", "Casa e conforto", 300, "Uma contribuição para equipar nossa área de serviço.", "/img/presentes/1-parcela-da-lava-e-seca.jpg", "", "sim", 13],
   ["p14", "Ajuda na 1° viagem internacional do casal", "Viagens e sonhos", 500, "Contribua para que possamos realizar nosso sonho de viajar para fora do país.", "/img/presentes/ajuda-na-1-viagem-internacional-do-casal-v2.jpg", "", "sim", 14],
-  ["p15", "Luminárias para noites aconchegantes", "Casa e conforto", 300, "Para criar aquele clima gostoso no fim do dia.", "/img/presentes/luminarias-para-noites-aconchegantes.jpg", "", "sim", 15],
+  ["p15", "Luminárias para noites aconchegantes", "Casa e conforto", 300, "Para criar aquele clima gostoso no fim do dia.", "/img/presentes/luminarias-para-noites-aconchegantes-v2.jpg", "", "sim", 15],
   ["p16", "Jogo de toalhas macias", "Casa e conforto", 200, "Para completar o enxoval com conforto e elegância.", "/img/presentes/jogo-de-toalhas-macias.jpg", "", "sim", 16],
   ["p17", "Fundo para a geladeira dos sonhos", "Cozinha", 800, "Uma contribuição para conservar nossos alimentos e abastecer a casa nova.", "/img/presentes/fundo-para-a-geladeira-dos-sonhos.jpg", "", "sim", 17],
   ["p18", "Nosso primeiro café de casados", "Momentos a dois", 150, "Para começar a vida a dois com café, carinho e muito amor.", "/img/presentes/nosso-primeiro-cafe-de-casados.jpg", "", "sim", 18],
@@ -57,7 +57,7 @@ var PRESENTES_INICIAIS = [
   ["p28", "Café da manhã na cama", "Momentos a dois", 200, "Para surpreender um ao outro sem precisar sair do quarto.", "/img/presentes/cafe-da-manha-na-cama.jpg", "", "sim", 28],
   ["p29", "Vale o primeiro lugar na fila do jantar", "Cotas divertidas", 150, "Vamos garantir que você seja a primeira pessoa a ser servida no jantar do Buffet.", "/img/presentes/vale-o-primeiro-lugar-na-fila-do-jantar.jpg", "", "sim", 29],
   ["p30", "Uma escapadinha a dois", "Viagens e sonhos", 350, "Para um passeio especial e um tempo só nosso.", "/img/presentes/uma-escapadinha-a-dois-v2.jpg", "", "sim", 30],
-  ["p31", "Ajuda para organizar a casa", "Casa e conforto", 250, "Para transformar caixas e bagunça em um lar cheio de personalidade.", "/img/presentes/ajuda-para-organizar-a-casa.jpg", "", "sim", 31],
+  ["p31", "Ajuda para organizar a casa", "Casa e conforto", 250, "Para transformar caixas e bagunça em um lar cheio de personalidade.", "/img/presentes/ajuda-para-organizar-a-casa-v2.jpg", "", "sim", 31],
   ["p32", "ANTI - TPM", "Cotas divertidas", 180, "Para que o noivo sobreviva a esse período", "/img/presentes/anti-tpm.jpg", "", "sim", 32],
   ["p33", "Paz na escolha do filme", "Cotas divertidas", 200, "Para ver o filme que os dois escolherem sem passar uma hora procurando.", "/img/presentes/paz-na-escolha-do-filme.jpg", "", "sim", 33],
   ["p34", "Fundo contra a louça acumulada", "Cozinha", 250, "Uma contribuição para ajudar a comprar nossa máquina de lavar louça", "/img/presentes/fundo-contra-a-louca-acumulada.jpg", "", "sim", 34],
@@ -65,7 +65,7 @@ var PRESENTES_INICIAIS = [
   ["p36", "Nosso lar, nosso refúgio", "Casa e conforto", 500, "Para investir em detalhes que deixem nossa casa ainda mais acolhedora.", "/img/presentes/nosso-lar-nosso-refugio.jpg", "", "sim", 36],
   ["p37", "Fundo para realizar um sonho", "Viagens e sonhos", 800, "Uma contribuição para transformar um dos nossos planos em realidade.", "/img/presentes/fundo-para-realizar-um-sonho.jpg", "", "sim", 37],
   ["p38", "Presente para nossa vida inteira", "Viagens e sonhos", 1000, "Para brindar ao amor, à parceria e a todos os sonhos que ainda vamos realizar juntos.", "/img/presentes/presente-para-nossa-vida-inteira.jpg", "", "sim", 38],
-  ["p39", "Minoxidil para o noivo", "Cotas divertidas", 250, "Para ajudar o noivo a cuidar do visual e manter a esperança de uma cabeleira de respeito no grande dia! 😂", "/img/presentes/minoxidil-para-o-noivo.jpg", "", "sim", 39]
+  ["p39", "Minoxidil para o noivo", "Cotas divertidas", 250, "Para ajudar o noivo a cuidar do visual e manter a esperança de uma cabeleira de respeito no grande dia! 😂", "/img/presentes/minoxidil-para-o-noivo-v2.jpg", "", "sim", 39]
 ];
 
 function configurar() {
