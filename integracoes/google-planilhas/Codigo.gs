@@ -48,7 +48,7 @@ var PRESENTES_INICIAIS = [
   ["p19", "Vale-jantar romântico", "Momentos a dois", 250, "Para um encontro especial depois da correria do casamento.", "/img/presentes/vale-jantar-romantico.jpg", "", "sim", 19],
   ["p20", "Patrocine nossa próxima viagem", "Viagens e sonhos", 350, "Para colecionarmos novas paisagens e lembranças.", "/img/presentes/patrocine-nossa-proxima-viagem.jpg", "", "sim", 20],
   ["p21", "Cinema sem sair de casa", "Momentos a dois", 150, "Para pipoca, filmes e aquela discussão sobre quem escolhe o próximo.", "/img/presentes/cinema-sem-sair-de-casa.jpg", "", "sim", 21],
-  ["p22", "1 dose de Monjaro pra Noiva", "Cotas divertidas", 250, "Para dançarmos juntos, mesmo quando um de nós errar o passo.", "/img/presentes/1-dose-de-monjaro-pra-noiva.jpg", "", "sim", 22],
+  ["p22", "1 dose de Monjaro pra Noiva", "Cotas divertidas", 250, "Noiva em fuga dos kilinhos", "/img/presentes/1-dose-de-monjaro-pra-noiva.jpg", "", "sim", 22],
   ["p23", "Dia de descanso dos recém-casados", "Momentos a dois", 350, "Para desacelerar depois de organizar cada detalhe do casamento.", "/img/presentes/dia-de-descanso-dos-recem-casados.jpg", "", "sim", 23],
   ["p24", "Noite da pizza", "Momentos a dois", 180, "Para cozinhar juntos ou pedir aquela pizza sem culpa.", "/img/presentes/noite-da-pizza.jpg", "", "sim", 24],
   ["p25", "Um passeio surpresa", "Momentos a dois", 250, "Para sair da rotina e criar uma memória inesperada.", "/img/presentes/um-passeio-surpresa.jpg", "", "sim", 25],

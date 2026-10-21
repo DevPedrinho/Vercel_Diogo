@@ -23,7 +23,7 @@ insert into public.gifts (title, category, price_cents, description, sort_order)
   ('Vale-jantar romântico', 'Momentos a dois', 25000, 'Para um encontro especial depois da correria do casamento.', 19),
   ('Patrocine nossa próxima viagem', 'Viagens e sonhos', 35000, 'Para colecionarmos novas paisagens e lembranças.', 20),
   ('Cinema sem sair de casa', 'Momentos a dois', 15000, 'Para pipoca, filmes e aquela discussão sobre quem escolhe o próximo.', 21),
-  ('1 dose de Monjaro pra Noiva', 'Cotas divertidas', 25000, 'Para dançarmos juntos, mesmo quando um de nós errar o passo.', 22),
+  ('1 dose de Monjaro pra Noiva', 'Cotas divertidas', 25000, 'Noiva em fuga dos kilinhos', 22),
   ('Dia de descanso dos recém-casados', 'Momentos a dois', 35000, 'Para desacelerar depois de organizar cada detalhe do casamento.', 23),
   ('Noite da pizza', 'Momentos a dois', 18000, 'Para cozinhar juntos ou pedir aquela pizza sem culpa.', 24),
   ('Um passeio surpresa', 'Momentos a dois', 25000, 'Para sair da rotina e criar uma memória inesperada.', 25),

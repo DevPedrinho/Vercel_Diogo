@@ -93,7 +93,7 @@ export const PRESENTES_INICIAIS: Presente[] = [
   presente(19, "Momentos a dois", "Vale-jantar romântico", 250, "Para um encontro especial depois da correria do casamento."),
   presente(20, "Viagens e sonhos", "Patrocine nossa próxima viagem", 350, "Para colecionarmos novas paisagens e lembranças."),
   presente(21, "Momentos a dois", "Cinema sem sair de casa", 150, "Para pipoca, filmes e aquela discussão sobre quem escolhe o próximo."),
-  presente(22, "Cotas divertidas", "1 dose de Monjaro pra Noiva", 250, "Para dançarmos juntos, mesmo quando um de nós errar o passo."),
+  presente(22, "Cotas divertidas", "1 dose de Monjaro pra Noiva", 250, "Noiva em fuga dos kilinhos"),
   presente(23, "Momentos a dois", "Dia de descanso dos recém-casados", 350, "Para desacelerar depois de organizar cada detalhe do casamento."),
   presente(24, "Momentos a dois", "Noite da pizza", 180, "Para cozinhar juntos ou pedir aquela pizza sem culpa."),
   presente(25, "Momentos a dois", "Um passeio surpresa", 250, "Para sair da rotina e criar uma memória inesperada."),
