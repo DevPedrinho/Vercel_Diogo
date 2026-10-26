@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { MOSTRAR_PADRINHOS } from "@/lib/visibilidade";
 import { carregarCasamento, carregarPadrinhos, prazoDaConfirmacao } from "@/lib/conteudo";
 import { DressCode } from "@/components/DressCode";
 import { CartaoPadrinho } from "@/components/CartaoPadrinho";
@@ -235,7 +236,7 @@ export default async function Inicio() {
       </Secao>
 
       {/* ---------- Padrinhos ---------- */}
-      {padrinhos.length > 0 && (
+      {MOSTRAR_PADRINHOS && padrinhos.length > 0 && (
         <Secao id="padrinhos" sobretitulo="Ao nosso lado no altar" titulo={c.padrinhos_titulo}>
           <p className="mx-auto -mt-4 mb-12 max-w-xl text-center text-lg text-marinho">{c.padrinhos_intro}</p>
           <div className="space-y-14">

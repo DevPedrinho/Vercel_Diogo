@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { MOSTRAR_PADRINHOS } from "@/lib/visibilidade";
 import { carregarCasamento, carregarPadrinhos } from "@/lib/conteudo";
 import { CabecalhoPagina } from "@/components/CabecalhoPagina";
 import { CartaoPadrinho } from "@/components/CartaoPadrinho";
@@ -8,6 +10,7 @@ import { Faixa } from "@/components/Ornamentos";
 export const metadata: Metadata = { title: "Padrinhos e madrinhas" };
 
 export default async function Padrinhos() {
+  if (!MOSTRAR_PADRINHOS) notFound();
   const [c, padrinhos] = await Promise.all([carregarCasamento(), carregarPadrinhos()]);
   const lados = [
     { lado: "noiva" as const, titulo: `Do lado da noiva` },

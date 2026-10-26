@@ -3,11 +3,12 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { MOSTRAR_PADRINHOS } from "@/lib/visibilidade";
 
 const LINKS = [
   { href: "/#convite", rotulo: "Convite" },
   { href: "/nossa-historia", rotulo: "Nossa história" },
-  { href: "/padrinhos", rotulo: "Padrinhos" },
+  ...(MOSTRAR_PADRINHOS ? [{ href: "/padrinhos", rotulo: "Padrinhos" }] : []),
   { href: "/#dress-code", rotulo: "Dress code" },
   { href: "/presentes", rotulo: "Presentes" },
   { href: "/confirmar", rotulo: "Confirmar presença", destaque: true },
