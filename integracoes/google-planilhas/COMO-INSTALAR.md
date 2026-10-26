@@ -40,7 +40,7 @@ token, ele não lê nem grava nada.
 | imagem | Link da foto. Link de loja ou de foto do Google Drive compartilhada como *qualquer pessoa com o link*. |
 | valor | Só o número: `450` ou `1250,50`. Vazio = valor livre. |
 | ativo | `não` esconde o presente sem apagar a linha. |
-| link | Opcional. Vazio = o convidado paga pelo PIX do casal. |
+| link | Opcional. Vazio = o botão Presentear abre a janela de recado. |
 
 Não renomeie os cabeçalhos da primeira linha nem as abas.
 

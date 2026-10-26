@@ -27,17 +27,14 @@ function ordenar(lista: Presente[], ordem: Ordem): Presente[] {
   });
 }
 
-export type DadosPix = { chave: string; titular: string; banco: string };
 
 export function ListaPresentes({
   presentes,
   obrigado,
-  pix,
   fonteRecados,
 }: {
   presentes: Presente[];
   obrigado: string;
-  pix: DadosPix;
   /** Onde o recado é guardado; null = em lugar nenhum (o formulário some). */
   fonteRecados: "planilha" | "supabase" | null;
 }) {
@@ -123,7 +120,6 @@ export function ListaPresentes({
         <Agradecimento
           presente={escolhido}
           obrigado={obrigado}
-          pix={pix}
           fonteRecados={fonteRecados}
           aoFechar={() => setEscolhido(null)}
         />
@@ -186,7 +182,7 @@ function Cartao({ presente, aoPresentear }: { presente: Presente; aoPresentear: 
               Presentear
             </BotaoExterno>
           ) : (
-            // Sem link próprio: o PIX do casal abre na janela de presentear.
+            // Sem link próprio: abre a janela com o valor e o recado.
             <Botao type="button" onClick={aoPresentear} className="w-full">
               <Coracao cheio className="w-3.5" />
               Presentear
@@ -206,13 +202,11 @@ function Cartao({ presente, aoPresentear }: { presente: Presente; aoPresentear: 
 function Agradecimento({
   presente,
   obrigado,
-  pix,
   fonteRecados,
   aoFechar,
 }: {
   presente: Presente;
   obrigado: string;
-  pix: DadosPix;
   fonteRecados: "planilha" | "supabase" | null;
   aoFechar: () => void;
 }) {
@@ -220,22 +214,9 @@ function Agradecimento({
   const [recado, setRecado] = useState("");
   const [estado, setEstado] = useState<"aberto" | "enviando" | "enviado" | "erro">("aberto");
   const primeiroCampo = useRef<HTMLInputElement>(null);
-  const porPix = !linkSeguro(presente.gift_url);
-  const [copiado, setCopiado] = useState(false);
-
-  async function copiarChave() {
-    try {
-      await navigator.clipboard.writeText(pix.chave);
-    } catch {
-      // Navegador sem permissão de área de transferência: a chave segue
-      // selecionável na tela.
-    }
-    setCopiado(true);
-    setTimeout(() => setCopiado(false), 2500);
-  }
-
+  const semLink = !linkSeguro(presente.gift_url);
   useEffect(() => {
-    if (!porPix) primeiroCampo.current?.focus();
+    if (!semLink) primeiroCampo.current?.focus();
     const original = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     const aoTeclar = (e: KeyboardEvent) => e.key === "Escape" && aoFechar();
@@ -292,32 +273,14 @@ function Agradecimento({
 
         <Coracao cheio className="mx-auto w-6 text-ouro" />
         <h2 id="titulo-obrigado" className="script mt-3 text-5xl text-marinho">
-          {porPix ? presente.title : "Obrigado!"}
+          {semLink ? presente.title : "Obrigado!"}
         </h2>
-        {porPix ? (
+        {semLink ? (
           <div className="mt-4">
             {presente.price_cents !== null && (
               <p className="titulo-serif text-4xl text-ouro-escuro tabular-nums lining-nums">{formatarPreco(presente.price_cents)}</p>
             )}
-            {pix.chave ? (
-              <div className="mt-5 border border-ouro/40 bg-papel px-4 py-4">
-                <p className="versalete titulo-serif text-[0.7rem] font-semibold text-ouro-escuro">Chave PIX</p>
-                <p className="mt-1 text-lg break-all text-marinho select-all">{pix.chave}</p>
-                {(pix.titular || pix.banco) && (
-                  <p className="mt-1 text-sm text-azul">{[pix.titular, pix.banco].filter(Boolean).join(" · ")}</p>
-                )}
-                <Botao type="button" variante="contorno" onClick={copiarChave} className="mt-4 w-full">
-                  {copiado ? "Chave copiada!" : "Copiar chave PIX"}
-                </Botao>
-              </div>
-            ) : (
-              <p className="mt-5 border border-ouro/40 bg-papel px-4 py-4 text-base text-marinho">
-                A chave PIX dos noivos será informada aqui em breve. 💙
-              </p>
-            )}
-            <p className="mt-4 text-sm text-azul">
-              No app do seu banco, escolha PIX, cole a chave e informe o valor.
-            </p>
+            <p className="mt-3 text-base text-marinho">{obrigado}</p>
           </div>
         ) : (
           <p className="mt-2 text-base text-marinho">{obrigado}</p>
@@ -328,8 +291,8 @@ function Agradecimento({
         ) : !fonteRecados ? null : (
           <form onSubmit={enviar} className="mt-7 space-y-4 text-left">
             <p className="text-center text-sm text-azul">
-              {porPix ? (
-                <>Depois do PIX, deixe seu nome para a gente saber de quem veio o carinho:</>
+              {semLink ? (
+                <>Deixe seu nome e um recado para a gente saber de quem veio o carinho:</>
               ) : (
                 <>
                   O pagamento de <strong className="font-medium text-marinho">{presente.title}</strong> abriu em outra aba.

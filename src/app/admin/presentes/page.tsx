@@ -9,7 +9,7 @@ export default async function PresentesAdmin() {
   return (
     <>
       <TituloPagina sobretitulo="Painel" titulo="Lista de presentes">
-        Cada presente é pago pelo PIX do casal — ou, se vocês colarem um link, pelo link de pagamento ou pela página da loja.
+        Se vocês colarem um link no presente, o botão Presentear leva para o pagamento ou para a página da loja.
       </TituloPagina>
       <PainelPresentes presentes={presentes} recados={recados} demo={sessao.demo} planilha={planilhaConfigurada ? { link: LINK_PLANILHA } : null} />
     </>

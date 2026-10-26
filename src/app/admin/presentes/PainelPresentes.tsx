@@ -169,7 +169,7 @@ export function PainelPresentes({
             <li><strong className="font-medium">imagem</strong> — cole o link da foto. Serve link de loja ou de foto do Google Drive (compartilhada como “qualquer pessoa com o link”).</li>
             <li><strong className="font-medium">valor</strong> — só o número, como 450 ou 1250,50. Vazio = valor livre.</li>
             <li><strong className="font-medium">ativo</strong> — escreva “não” para esconder o presente sem apagar a linha.</li>
-            <li><strong className="font-medium">link</strong> — opcional; vazio = o convidado paga pelo PIX do casal.</li>
+            <li><strong className="font-medium">link</strong> — opcional; vazio = o convidado só deixa o nome e um recado.</li>
           </ul>
           {erro && <div className="mt-4"><Aviso tipo="erro">{erro}</Aviso></div>}
           {planilha.link && (
@@ -255,7 +255,7 @@ export function PainelPresentes({
                 value={form.gift_url}
                 onChange={(e) => setForm({ ...form, gift_url: e.target.value })}
               />
-              <Ajuda>Vazio = o convidado paga pelo PIX do casal (configurado em Textos → Lista de presentes).</Ajuda>
+              <Ajuda>Vazio = o convidado só deixa o nome e um recado.</Ajuda>
             </div>
           </div>
 
@@ -346,7 +346,7 @@ export function PainelPresentes({
                       {!p.is_active && <span className="ml-2 text-sm text-azul italic">(oculto)</span>}
                     </p>
                     <p className="truncate text-sm text-azul">
-                      {formatarPreco(p.price_cents) ?? "Valor livre"} · {p.gift_url ?? "PIX do casal"}
+                      {formatarPreco(p.price_cents) ?? "Valor livre"} · {p.gift_url ?? "sem link"}
                     </p>
                   </div>
                   {!planilha && (

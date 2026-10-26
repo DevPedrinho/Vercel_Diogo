@@ -64,7 +64,7 @@ const presente = (n: number, category: string, title: string, reais: number | nu
   price_cents: reais === null ? null : reais * 100,
   image_path: ARTES_PRESENTES[n] ?? null,
   image_url: null,
-  // Sem link: o botão Presentear mostra o PIX do casal.
+  // Sem link: o botão Presentear abre a janela de recado.
   gift_url: null,
   is_active: true,
   sort_order: n,

@@ -213,16 +213,8 @@ export const GRUPOS: GrupoTextos[] = [
         rotulo: "Texto de abertura",
         tipo: "paragrafo",
         padrao:
-          "Sua presença já é o nosso maior presente. Mas, se quiser abençoar o começo da nossa vida juntos, escolha um item abaixo e presenteie pelo PIX. Os valores são sugestões de cotas — não precisam ser o preço exato de cada produto.",
+          "Sua presença já é o nosso maior presente. Mas, se quiser abençoar o começo da nossa vida juntos, escolha um item abaixo e presenteie. Os valores são sugestões de cotas — não precisam ser o preço exato de cada produto.",
       },
-      {
-        chave: "pix_chave",
-        rotulo: "Chave PIX do casal",
-        padrao: "",
-        ajuda: "Usada nos presentes sem link próprio: o convidado vê o valor e copia a chave.",
-      },
-      { chave: "pix_titular", rotulo: "Nome do titular do PIX", padrao: "" },
-      { chave: "pix_banco", rotulo: "Banco do PIX (opcional)", padrao: "" },
       {
         chave: "presentes_obrigado",
         rotulo: "Agradecimento depois de presentear",
