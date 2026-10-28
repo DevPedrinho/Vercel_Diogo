@@ -27,6 +27,7 @@ export const ABAS = {
   presentes: "Presentes",
   confirmacoes: "Confirmações",
   recados: "Recados",
+  convidados: "Convidados",
 } as const;
 
 type Linha = Record<string, string | number | boolean | null>;

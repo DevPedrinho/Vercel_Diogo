@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { carregarCasamento, prazoDaConfirmacao } from "@/lib/conteudo";
 import { supabaseConfigurado } from "@/lib/supabase/ativo";
 import { planilhaConfigurada } from "@/lib/planilha";
+import { carregarConvidados, conviteDoCodigo } from "@/lib/convidados";
 import { CabecalhoPagina } from "@/components/CabecalhoPagina";
 import { FormConfirmacao } from "./FormConfirmacao";
 
@@ -10,8 +11,13 @@ export const metadata: Metadata = {
   description: "Confirme sua presença no nosso casamento.",
 };
 
-export default async function Confirmar() {
-  const c = await carregarCasamento();
+export default async function Confirmar({ searchParams }: { searchParams: Promise<{ convite?: string }> }) {
+  const { convite } = await searchParams;
+  const [c, convidados, conviteInicial] = await Promise.all([
+    carregarCasamento(),
+    carregarConvidados(),
+    convite ? conviteDoCodigo(convite) : Promise.resolve(null),
+  ]);
   const prazo = prazoDaConfirmacao(c.rsvp_prazo);
   const whats = c.contato_whatsapp.replace(/\D/g, "");
 
@@ -26,6 +32,8 @@ export default async function Confirmar() {
           whatsapp={whats ? `https://wa.me/55${whats}` : null}
           dataExtenso={`${c.dataExtenso} · ${c.hora}`}
           fonte={planilhaConfigurada ? "planilha" : supabaseConfigurado ? "supabase" : null}
+          temLista={convidados.length > 0}
+          conviteInicial={conviteInicial}
         />
       </section>
     </>

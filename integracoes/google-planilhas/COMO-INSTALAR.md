@@ -48,3 +48,24 @@ Não renomeie os cabeçalhos da primeira linha nem as abas.
 ordenar à vontade; o painel do site (`/admin/confirmacoes`) mostra os totais.
 
 **Aba Recados** — nome e recado de quem presenteou.
+
+**Aba Convidados** — a lista de convidados dos noivos. Quem está aqui é
+reconhecido no formulário: digita o nome (ou o WhatsApp) e o convite já vem
+preenchido, é só responder se vai. Quem não está na lista continua podendo
+confirmar pelo formulário em branco.
+
+| coluna | o que pôr |
+| --- | --- |
+| id | Deixe vazio: o script cria um código sozinho. Ele vira o link pessoal `…/confirmar?convite=CODIGO`. |
+| nome | Nome completo do titular do convite. |
+| whatsapp | Opcional. Com DDD. A pessoa também é achada por ele. |
+| acompanhantes | Quantas pessoas o convite inclui além do titular (`0` = individual). Vazio = sem limite definido. |
+| nomes_acompanhantes | Opcional. Um por linha (ou separados por vírgula). Quem vem junto também acha o convite pelo próprio nome. |
+| grupo | Livre (família da noiva, trabalho…). Só para organizar. |
+
+Se a pessoa responder de novo, a resposta nova substitui a antiga na aba
+Confirmações (não duplica). A lista atualiza no site em até 1 minuto.
+
+> A aba Convidados precisa da versão nova do `Codigo.gs`: cole o arquivo
+> atualizado, rode **configurar** de novo (cria a aba) e faça **Gerenciar
+> implantações → editar → Nova versão**.

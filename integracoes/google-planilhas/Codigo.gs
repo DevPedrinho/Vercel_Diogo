@@ -23,6 +23,9 @@ var CABECALHOS = {
   'Presentes': ['id', 'titulo', 'categoria', 'valor', 'descricao', 'imagem', 'link', 'ativo', 'ordem'],
   'Confirmações': ['id', 'data', 'nome', 'vai', 'acompanhantes', 'nomes_acompanhantes', 'whatsapp', 'recado'],
   'Recados': ['id', 'data', 'presente', 'nome', 'recado'],
+  // Lista de convidados dos noivos: quem está aqui é reconhecido no formulário.
+  // acompanhantes = quantas pessoas o convite inclui além do titular.
+  'Convidados': ['id', 'nome', 'whatsapp', 'acompanhantes', 'nomes_acompanhantes', 'grupo'],
 };
 
 /** A lista da planilha dos noivos: entra na aba Presentes quando ela é criada. */
@@ -100,7 +103,10 @@ function doPost(e) {
     var aba = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(pedido.aba || '');
     if (!aba || !CABECALHOS[pedido.aba]) return responder({ ok: false, erro: 'aba não encontrada' });
 
-    if (pedido.acao === 'ler') return responder({ ok: true, linhas: ler(aba) });
+    if (pedido.acao === 'ler') {
+      if (pedido.aba === 'Convidados') garantirIds(aba);
+      return responder({ ok: true, linhas: ler(aba) });
+    }
     if (pedido.acao === 'anexar') return responder({ ok: true, id: anexar(aba, pedido.dados || {}) });
     if (pedido.acao === 'apagar') return responder({ ok: true, apagou: apagar(aba, String(pedido.id || '')) });
     return responder({ ok: false, erro: 'ação desconhecida' });
@@ -133,6 +139,36 @@ function ler(aba) {
       });
       return objeto;
     });
+}
+
+/**
+ * Convidado colado na planilha sem id ganha um código curto, que vira o link
+ * pessoal do convite (/confirmar?convite=CODIGO). Quem já tem código mantém.
+ */
+function garantirIds(aba) {
+  var total = aba.getLastRow();
+  if (total < 2) return;
+  var cabecalho = aba.getRange(1, 1, 1, aba.getLastColumn()).getValues()[0].map(chave);
+  var colId = cabecalho.indexOf('id');
+  var colNome = cabecalho.indexOf('nome');
+  if (colId < 0 || colNome < 0) return;
+  var ids = aba.getRange(2, colId + 1, total - 1, 1).getValues();
+  var nomes = aba.getRange(2, colNome + 1, total - 1, 1).getValues();
+  var mudou = false;
+  for (var i = 0; i < ids.length; i++) {
+    if (!String(ids[i][0]).trim() && String(nomes[i][0]).trim()) {
+      ids[i][0] = codigoCurto();
+      mudou = true;
+    }
+  }
+  if (mudou) aba.getRange(2, colId + 1, total - 1, 1).setValues(ids);
+}
+
+function codigoCurto() {
+  var letras = 'abcdefghjkmnpqrstuvwxyz23456789';
+  var codigo = '';
+  for (var i = 0; i < 8; i++) codigo += letras.charAt(Math.floor(Math.random() * letras.length));
+  return codigo;
 }
 
 function anexar(aba, dados) {
