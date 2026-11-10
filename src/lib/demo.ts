@@ -149,7 +149,6 @@ export const PADRINHOS_INICIAIS: Padrinho[] = [
   padrinho(4, "noiva", "Ludmylla & João Victor", "/img/padrinhos/ludmylla-e-joao-victor.jpg"),
   padrinho(5, "noivo", "Priscila & Breno", "/img/padrinhos/priscila-e-breno.jpg"),
   padrinho(6, "noivo", "Thyago & Gleiciane", "/img/padrinhos/thyago-e-gleiciane.jpg"),
-  padrinho(7, "noivo", "Patrick & Letícia", "/img/padrinhos/patrick-e-leticia.jpg"),
   padrinho(8, "noivo", "Yuri & Lara", "/img/padrinhos/yuri-e-lara.jpg"),
 ];
 

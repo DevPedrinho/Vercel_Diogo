@@ -16,7 +16,7 @@ da linha do tempo, dos padrinhos e das confirmações de presença**. Não há c
 | Nossa história | `/nossa-historia` | Linha do tempo com capítulos, datas e fotos em moldura de arco |
 | Padrinhos | `/padrinhos` | Padrinhos e madrinhas separados pelo lado da noiva e do noivo |
 | Presentes | `/presentes` | Os 39 presentes da planilha dos noivos, com filtro por categoria; o botão **Presentear** mostra o valor e a chave PIX do casal (ou abre o link de pagamento, quando o item tiver um) e pede nome e recado |
-| Confirmar presença | `/confirmar` | Formulário de RSVP com acompanhantes; fecha sozinho depois do prazo (30/10/2026) |
+| Confirmar presença | `/confirmar` | Formulário de RSVP com acompanhantes; fecha sozinho depois do prazo (15/11/2026) |
 | Entrar | `/entrar` | Login dos noivos |
 | Painel | `/admin` | Resumo e últimos recados |
 | Confirmações (painel) | `/admin/confirmacoes` | Total de pessoas confirmadas, busca, filtro e download em planilha (CSV) |
