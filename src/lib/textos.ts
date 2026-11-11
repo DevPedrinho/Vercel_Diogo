@@ -234,7 +234,7 @@ export const GRUPOS: GrupoTextos[] = [
         tipo: "paragrafo",
         padrao: "Sua presença é muito importante para nós! Para organizarmos tudo com carinho, pedimos que confirme até a data abaixo.",
       },
-      { chave: "rsvp_prazo", rotulo: "Prazo para confirmar", tipo: "data", padrao: "2026-11-15" },
+      { chave: "rsvp_prazo", rotulo: "Prazo para confirmar", tipo: "data", padrao: "2026-11-20" },
       {
         chave: "rsvp_encerrado",
         rotulo: "Mensagem depois do prazo",
