@@ -57,7 +57,7 @@ confirmar pelo formulário em branco.
 | coluna | o que pôr |
 | --- | --- |
 | id | Deixe vazio: o script cria um código sozinho. Ele vira o link pessoal `…/confirmar?convite=CODIGO`. |
-| nome | Nome completo do titular do convite. |
+| nome | Nome do titular do convite. Basta o primeiro nome: se dois convites tiverem o mesmo nome, o site mostra os dois (com os acompanhantes) e a pessoa escolhe o dela. |
 | whatsapp | Opcional. Com DDD. A pessoa também é achada por ele. |
 | acompanhantes | Quantas pessoas o convite inclui além do titular (`0` = individual). Vazio = sem limite definido. |
 | nomes_acompanhantes | Opcional. Um por linha (ou separados por vírgula). Quem vem junto também acha o convite pelo próprio nome. |

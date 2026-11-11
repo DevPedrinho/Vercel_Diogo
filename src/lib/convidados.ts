@@ -28,10 +28,17 @@ export type ConvitePublico = Omit<Convidado, "whatsapp"> & {
   respostaAnterior: { vai: boolean; acompanhantes: number; data: string } | null;
 };
 
+/** Um convite entre vários com o mesmo nome: o convidado escolhe o dele. */
+export type OpcaoConvite = { id: string; nome: string; acompanhantes: string[] };
+
 export type ResultadoBusca =
   | { status: "achou"; convite: ConvitePublico }
+  | { status: "opcoes"; opcoes: OpcaoConvite[] }
   | { status: "ambiguo" }
   | { status: "nao_achou" };
+
+/** Acima disso a busca é vaga demais para listar os convites. */
+const MAX_OPCOES = 6;
 
 const texto = (v: unknown) => (v === null || v === undefined ? "" : String(v).trim());
 const digitos = (v: unknown) => texto(v).replace(/\D/g, "");
@@ -82,12 +89,17 @@ export async function carregarConvidados(): Promise<Convidado[]> {
   }
 }
 
-/** Linhas da aba Confirmações que são deste convidado (pelo nome do convite). */
+/**
+ * Linhas da aba Confirmações que são deste convidado: mesmo nome e, quando o
+ * convite tem WhatsApp, mesmo número. Sem o número, dois "Yuri" da lista se
+ * confundiriam e a resposta de um apagaria a do outro.
+ */
 export async function respostasDoConvidado(c: Convidado): Promise<{ id: string; vai: boolean; acompanhantes: number; data: string }[]> {
   const alvo = normalizar(c.nome);
+  const fone = digitos(c.whatsapp).slice(-8);
   const linhas = await lerAba(ABAS.confirmacoes);
   return linhas
-    .filter((l) => normalizar(l.nome) === alvo)
+    .filter((l) => normalizar(l.nome) === alvo && (fone.length < 8 || digitos(l.whatsapp).slice(-8) === fone))
     .map((l) => ({
       id: texto(l.id),
       vai: /^(sim|s|true|1|x|vai|verdadeiro)$/i.test(texto(l.vai)),
@@ -123,7 +135,8 @@ export async function conviteDoCodigo(codigo: string): Promise<ConvitePublico | 
 
 /**
  * Acha o convite pelo nome (do titular ou de um acompanhante) ou pelo WhatsApp.
- * Só o primeiro nome não basta: é fácil ter duas Marias na lista.
+ * Basta o primeiro nome: se mais de um convite servir, a pessoa escolhe o dela
+ * numa lista curta (titular e acompanhantes, sem WhatsApp).
  */
 export async function buscarConvite(termo: string): Promise<ResultadoBusca> {
   const lista = await carregarConvidados();
@@ -138,7 +151,7 @@ export async function buscarConvite(termo: string): Promise<ResultadoBusca> {
 
   const alvo = normalizar(termo);
   const pedacos = partes(termo);
-  if (pedacos.length < 2) return { status: "nao_achou" };
+  if (!pedacos.length || alvo.length < 2) return { status: "nao_achou" };
 
   const nomesDe = (c: Convidado) => [c.nome, ...c.nomesAcompanhantes];
   const exatos = lista.filter((c) => nomesDe(c).some((n) => normalizar(n) === alvo));
@@ -156,6 +169,12 @@ export async function buscarConvite(termo: string): Promise<ResultadoBusca> {
 
 async function resultado(achados: Convidado[]): Promise<ResultadoBusca> {
   if (achados.length === 1) return { status: "achou", convite: await publico(achados[0]) };
-  if (achados.length > 1) return { status: "ambiguo" };
+  if (achados.length > MAX_OPCOES) return { status: "ambiguo" };
+  if (achados.length > 1) {
+    return {
+      status: "opcoes",
+      opcoes: achados.map((c) => ({ id: c.id, nome: c.nome, acompanhantes: c.nomesAcompanhantes })),
+    };
+  }
   return { status: "nao_achou" };
 }

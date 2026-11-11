@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState, type FormEvent } from "react";
 import { criarClienteNavegador } from "@/lib/supabase/cliente";
-import type { ConvitePublico } from "@/lib/convidados";
+import type { ConvitePublico, OpcaoConvite } from "@/lib/convidados";
 import { formatarDataHora } from "@/lib/formato";
 import { Botao } from "@/components/Botao";
 import { Ajuda, Aviso, Rotulo } from "@/components/Formulario";
@@ -12,6 +12,10 @@ import { Coracao, Divisor } from "@/components/Ornamentos";
 const MAX_ACOMPANHANTES = 6;
 
 const pareceTelefone = (v: string) => v.replace(/\D/g, "").length >= 8;
+
+/** ["Ana", "Bia", "Caio"] → "Ana, Bia e Caio". */
+const juntarNomes = (nomes: string[]) =>
+  nomes.length < 2 ? nomes.join("") : `${nomes.slice(0, -1).join(", ")} e ${nomes[nomes.length - 1]}`;
 
 export function FormConfirmacao({
   aberto,
@@ -40,6 +44,7 @@ export function FormConfirmacao({
   const [busca, setBusca] = useState("");
   const [buscando, setBuscando] = useState(false);
   const [avisoBusca, setAvisoBusca] = useState<string | null>(null);
+  const [opcoes, setOpcoes] = useState<OpcaoConvite[] | null>(null);
 
   const [nome, setNome] = useState("");
   const [vai, setVai] = useState<"sim" | "nao" | null>(null);
@@ -69,8 +74,9 @@ export function FormConfirmacao({
     e.preventDefault();
     setAvisoBusca(null);
     const termo = busca.trim();
-    if (!pareceTelefone(termo) && termo.split(/\s+/).filter((p) => p.length > 1).length < 2) {
-      return setAvisoBusca("Escreva seu nome e sobrenome, ou o seu WhatsApp com DDD.");
+    setOpcoes(null);
+    if (!pareceTelefone(termo) && termo.replace(/[^\p{L}]/gu, "").length < 2) {
+      return setAvisoBusca("Escreva seu nome ou o seu WhatsApp com DDD.");
     }
     setBuscando(true);
     try {
@@ -79,12 +85,19 @@ export function FormConfirmacao({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ busca: termo }),
       });
-      const json = (await resposta.json().catch(() => ({}))) as { status?: string; convite?: ConvitePublico; erro?: string };
+      const json = (await resposta.json().catch(() => ({}))) as {
+        status?: string;
+        convite?: ConvitePublico;
+        opcoes?: OpcaoConvite[];
+        erro?: string;
+      };
       if (json.status === "achou" && json.convite) {
         setConvite(json.convite);
         setEtapa("form");
+      } else if (json.status === "opcoes" && json.opcoes?.length) {
+        setOpcoes(json.opcoes);
       } else if (json.status === "ambiguo") {
-        setAvisoBusca("Encontramos mais de um convite com esse nome. Escreva seu nome completo ou o seu WhatsApp com DDD.");
+        setAvisoBusca("Encontramos muitos convites com esse nome. Escreva também o sobrenome ou o seu WhatsApp com DDD.");
       } else if (json.status === "nao_achou") {
         // Fora da lista não impede ninguém: segue para o formulário em branco.
         setConvite(null);
@@ -103,7 +116,33 @@ export function FormConfirmacao({
     }
   }
 
+  /** Abre o convite que a pessoa escolheu entre os de mesmo nome. */
+  async function escolher(id: string) {
+    setAvisoBusca(null);
+    setBuscando(true);
+    try {
+      const resposta = await fetch("/api/convite", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ codigo: id }),
+      });
+      const json = (await resposta.json().catch(() => ({}))) as { status?: string; convite?: ConvitePublico };
+      if (json.status === "achou" && json.convite) {
+        setOpcoes(null);
+        setConvite(json.convite);
+        setEtapa("form");
+      } else {
+        setAvisoBusca("Não deu para abrir esse convite agora. Tente de novo em instantes.");
+      }
+    } catch {
+      setAvisoBusca("Não deu para abrir esse convite agora. Confira a conexão e tente de novo.");
+    } finally {
+      setBuscando(false);
+    }
+  }
+
   function buscarDeNovo() {
+    setOpcoes(null);
     setConvite(null);
     setPreenchido(null);
     setNome("");
@@ -216,20 +255,45 @@ export function FormConfirmacao({
         <div className="text-center">
           <p className="script text-5xl text-marinho">Encontre seu convite</p>
           <Divisor className="mt-4" />
-          <p className="mt-4 text-lg text-marinho">Digite seu nome completo ou seu WhatsApp. Seu convite já vem preenchido, é só dizer se vai.</p>
+          <p className="mt-4 text-lg text-marinho">Digite seu nome ou seu WhatsApp. Seu convite já vem preenchido, é só dizer se vai.</p>
         </div>
         <div>
-          <Rotulo htmlFor="r-busca">Nome completo ou WhatsApp</Rotulo>
+          <Rotulo htmlFor="r-busca">Seu nome ou WhatsApp</Rotulo>
           <input
             id="r-busca"
             className="campo"
             autoComplete="name"
             maxLength={120}
-            placeholder="Ex.: Maria da Silva ou (85) 9 9999-9999"
+            placeholder="Ex.: Maria ou (85) 9 9999-9999"
             value={busca}
-            onChange={(e) => setBusca(e.target.value)}
+            onChange={(e) => {
+              setBusca(e.target.value);
+              setOpcoes(null);
+            }}
           />
         </div>
+        {opcoes && (
+          <div>
+            <p className="text-center text-base text-marinho">Encontramos {opcoes.length} convites com esse nome. Qual é o seu?</p>
+            <ul className="mt-4 space-y-3">
+              {opcoes.map((o) => (
+                <li key={o.id}>
+                  <button
+                    type="button"
+                    onClick={() => escolher(o.id)}
+                    disabled={buscando}
+                    className="w-full border border-ouro/50 bg-papel-claro px-5 py-4 text-left transition-colors hover:border-marinho focus-visible:border-marinho disabled:opacity-60"
+                  >
+                    <span className="titulo-serif block text-2xl text-marinho">{o.nome}</span>
+                    <span className="mt-1 block text-base text-azul">
+                      {o.acompanhantes.length ? `Com ${juntarNomes(o.acompanhantes)}` : "Convite individual"}
+                    </span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
         {avisoBusca && <Aviso tipo="info">{avisoBusca}</Aviso>}
         <Botao type="submit" disabled={buscando} className="w-full">
           {buscando ? "Procurando…" : "Encontrar meu convite"}
@@ -274,6 +338,9 @@ export function FormConfirmacao({
                 : `: ele vale para você e mais ${convite.acompanhantes === 1 ? "1 pessoa" : `${convite.acompanhantes} pessoas`}.`}
           </p>
           <p className="titulo-serif mt-3 text-xl text-marinho">{convite.nome}</p>
+          {convite.nomesAcompanhantes.length > 0 && (
+            <p className="mt-1 text-lg text-azul">Com {juntarNomes(convite.nomesAcompanhantes)}</p>
+          )}
           {temLista && (
             <button type="button" onClick={buscarDeNovo} className="mt-1 min-h-11 text-base text-azul underline underline-offset-4">
               Não é você? Buscar de novo
