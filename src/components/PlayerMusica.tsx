@@ -3,7 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 
 /**
- * A música do site: uma pílula discreta no canto da tela.
+ * A música do site. No computador, uma pílula discreta no canto da tela; no
+ * celular, só o botão redondo, na barra do topo ao lado do menu, para não
+ * cobrir formulário nem botão nenhum da página.
  *
  * A música começa sozinha 2 segundos depois de a página abrir. Só que
  * navegador nenhum deixa um site tocar som antes de a pessoa interagir com
@@ -102,7 +104,7 @@ export function PlayerMusica({
   if (erro) return null;
 
   return (
-    <div className="fixed bottom-4 left-4 z-40 mb-[env(safe-area-inset-bottom)] sm:bottom-6 sm:left-6">
+    <div className="fixed top-2.5 right-[4.5rem] z-50 lg:top-auto lg:right-auto lg:bottom-6 lg:left-6 lg:z-40 lg:mb-[env(safe-area-inset-bottom)]">
       <audio
         ref={audioRef}
         src={arquivo}
@@ -116,13 +118,13 @@ export function PlayerMusica({
         onPlaying={() => setCarregando(false)}
         onError={() => setErro(true)}
       />
-      <div className="flex items-center gap-3 rounded-full border border-ouro/40 bg-papel-claro/95 py-1.5 pr-4 pl-1.5 shadow-lg backdrop-blur">
+      <div className="flex items-center gap-3 rounded-full lg:border lg:border-ouro/40 lg:bg-papel-claro/95 lg:py-1.5 lg:pr-4 lg:pl-1.5 lg:shadow-lg lg:backdrop-blur">
         <button
           type="button"
           onClick={alternar}
           data-botao-musica
           aria-label={tocando ? "Pausar a música" : "Tocar a música"}
-          className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-marinho text-papel-claro transition-colors hover:bg-marinho-escuro ${tocando ? "respirar" : ""}`}
+          className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-marinho text-papel-claro shadow-md transition-colors hover:bg-marinho-escuro lg:h-10 lg:w-10 lg:shadow-none ${tocando ? "respirar" : ""}`}
         >
           {carregando ? (
             <span aria-hidden="true" className="h-4 w-4 animate-spin rounded-full border-2 border-papel/40 border-t-papel" />
@@ -137,14 +139,14 @@ export function PlayerMusica({
             </svg>
           )}
         </button>
-        <div className="min-w-0 max-w-36 sm:max-w-52">
+        <div className="hidden min-w-0 max-w-52 lg:block">
           <p className="titulo-serif truncate text-sm leading-tight text-marinho">{titulo}</p>
           <p className="truncate text-xs leading-tight text-azul">
             {tocando ? (artista ?? "Tocando agora") : "Toque para ouvir"}
           </p>
         </div>
         {tocando && (
-          <span className="equalizar flex h-4 items-end gap-0.5" aria-hidden="true">
+          <span className="equalizar hidden h-4 items-end gap-0.5 lg:flex" aria-hidden="true">
             <span className="h-full w-0.5 rounded-full bg-ouro" />
             <span className="h-full w-0.5 rounded-full bg-ouro" />
             <span className="h-full w-0.5 rounded-full bg-ouro" />
