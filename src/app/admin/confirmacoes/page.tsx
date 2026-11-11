@@ -2,6 +2,7 @@ import { carregarCasamento, carregarConfirmacoes, prazoDaConfirmacao } from "@/l
 import { exigirAdmin } from "@/lib/admin";
 import { LINK_PLANILHA, planilhaConfigurada } from "@/lib/planilha";
 import { TituloPagina } from "@/components/Formulario";
+import { carregarConvidados, trocasDeAcompanhante } from "@/lib/convidados";
 import { PainelConfirmacoes } from "./PainelConfirmacoes";
 
 export default async function ConfirmacoesAdmin() {
@@ -14,6 +15,7 @@ export default async function ConfirmacoesAdmin() {
   } catch {
     erro = "Não deu para ler a planilha agora. Atualize a página em instantes.";
   }
+  const trocas = trocasDeAcompanhante(respostas, await carregarConvidados());
   const prazo = prazoDaConfirmacao(c.rsvp_prazo);
   return (
     <>
@@ -26,6 +28,7 @@ export default async function ConfirmacoesAdmin() {
       </TituloPagina>
       <PainelConfirmacoes
         respostas={respostas}
+        trocas={trocas}
         fonte={planilhaConfigurada ? "planilha" : sessao.demo ? null : "supabase"}
         linkPlanilha={LINK_PLANILHA}
         erroLeitura={erro}

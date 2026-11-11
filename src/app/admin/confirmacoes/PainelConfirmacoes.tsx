@@ -3,18 +3,30 @@
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import type { Confirmacao } from "@/lib/tipos";
+import type { TrocaAcompanhante } from "@/lib/convidados";
 import { formatarDataHora } from "@/lib/formato";
 import { criarClienteNavegador } from "@/lib/supabase/cliente";
 import { Botao } from "@/components/Botao";
 import { Aviso, Bloco } from "@/components/Formulario";
 import { Icone } from "@/components/Icones";
 
-type Filtro = "todos" | "vao" | "nao";
+type Filtro = "todos" | "vao" | "nao" | "trocas";
+
+/** "No convite: Lara · Entrou: Melissa · Não vem: Lara" */
+function resumoTroca(t: TrocaAcompanhante) {
+  return [
+    `No convite: ${t.convite.join(", ")}`,
+    t.entraram.length ? `Entrou: ${t.entraram.join(", ")}` : "",
+    t.sairam.length ? `Não vem: ${t.sairam.join(", ")}` : "",
+  ]
+    .filter(Boolean)
+    .join(" · ");
+}
 
 /** Aspas e ponto e vírgula: o Excel em português abre direto, com acento. */
-function paraCsv(linhas: Confirmacao[]) {
+function paraCsv(linhas: Confirmacao[], trocas: Record<string, TrocaAcompanhante>) {
   const cel = (v: string | number | null) => `"${String(v ?? "").replace(/"/g, '""')}"`;
-  const cabecalho = ["Nome", "Vai?", "Acompanhantes", "Nomes dos acompanhantes", "Total de pessoas", "WhatsApp", "Recado", "Respondeu em"];
+  const cabecalho = ["Nome", "Vai?", "Acompanhantes", "Nomes dos acompanhantes", "Total de pessoas", "WhatsApp", "Recado", "Respondeu em", "Mudança de acompanhante"];
   const corpo = linhas.map((r) =>
     [
       r.name,
@@ -25,6 +37,7 @@ function paraCsv(linhas: Confirmacao[]) {
       r.phone,
       r.message,
       formatarDataHora(r.created_at),
+      trocas[r.id] ? resumoTroca(trocas[r.id]) : "",
     ]
       .map(cel)
       .join(";"),
@@ -34,11 +47,14 @@ function paraCsv(linhas: Confirmacao[]) {
 
 export function PainelConfirmacoes({
   respostas,
+  trocas = {},
   fonte,
   linkPlanilha,
   erroLeitura,
 }: {
   respostas: Confirmacao[];
+  /** Respostas cujo acompanhante mudou em relação ao convite, pelo id. */
+  trocas?: Record<string, TrocaAcompanhante>;
   fonte: "planilha" | "supabase" | null;
   linkPlanilha: string | null;
   erroLeitura: string | null;
@@ -55,13 +71,14 @@ export function PainelConfirmacoes({
     const termo = busca.trim().toLowerCase();
     return respostas.filter(
       (r) =>
-        (filtro === "todos" || (filtro === "vao") === r.attending) &&
+        (filtro === "todos" || (filtro === "trocas" ? Boolean(trocas[r.id]) : (filtro === "vao") === r.attending)) &&
         (!termo || `${r.name} ${r.companion_names ?? ""}`.toLowerCase().includes(termo)),
     );
-  }, [respostas, filtro, busca]);
+  }, [respostas, filtro, busca, trocas]);
+  const totalTrocas = Object.keys(trocas).length;
 
   function baixar() {
-    const blob = new Blob([paraCsv(respostas)], { type: "text/csv;charset=utf-8" });
+    const blob = new Blob([paraCsv(respostas, trocas)], { type: "text/csv;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
@@ -145,6 +162,7 @@ export function PainelConfirmacoes({
               ["todos", "Todos"],
               ["vao", "Vão"],
               ["nao", "Não vão"],
+              ...(totalTrocas ? ([["trocas", `Mudou acompanhante (${totalTrocas})`]] as const) : []),
             ] as const
           ).map(([v, t]) => (
             <button
@@ -171,8 +189,18 @@ export function PainelConfirmacoes({
                   {r.attending ? `Vai${r.companions ? ` +${r.companions}` : ""}` : "Não vai"}
                 </span>
                 <div className="min-w-0 flex-1">
-                  <p className="titulo-serif text-xl text-marinho">{r.name}</p>
+                  <p className="titulo-serif text-xl text-marinho">
+                    {r.name}
+                    {trocas[r.id] && (
+                      <span className="ml-2 inline-flex h-6 items-center rounded-full bg-[#f3ead9] px-2.5 align-middle font-sans text-xs text-ouro-escuro ring-1 ring-ouro/50">
+                        Mudou acompanhante
+                      </span>
+                    )}
+                  </p>
                   {r.companion_names && <p className="text-base whitespace-pre-line text-marinho">Com: {r.companion_names.replace(/\n+/g, ", ")}</p>}
+                  {trocas[r.id] && (
+                    <p className="mt-1 border-l-2 border-ouro pl-3 text-sm text-ouro-escuro">{resumoTroca(trocas[r.id])}</p>
+                  )}
                   {r.message && <p className="mt-0.5 text-base text-marinho italic">“{r.message}”</p>}
                   <p className="mt-0.5 text-sm text-azul">
                     {[r.phone, formatarDataHora(r.created_at)].filter(Boolean).join(" · ")}

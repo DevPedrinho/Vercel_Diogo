@@ -94,12 +94,15 @@ export async function carregarConvidados(): Promise<Convidado[]> {
  * convite tem WhatsApp, mesmo número. Sem o número, dois "Yuri" da lista se
  * confundiriam e a resposta de um apagaria a do outro.
  */
-export async function respostasDoConvidado(c: Convidado): Promise<{ id: string; vai: boolean; acompanhantes: number; data: string }[]> {
-  const alvo = normalizar(c.nome);
+export function eDoConvite(c: Convidado, nome: unknown, whatsapp: unknown): boolean {
   const fone = digitos(c.whatsapp).slice(-8);
+  return normalizar(nome) === normalizar(c.nome) && (fone.length < 8 || digitos(whatsapp).slice(-8) === fone);
+}
+
+export async function respostasDoConvidado(c: Convidado): Promise<{ id: string; vai: boolean; acompanhantes: number; data: string }[]> {
   const linhas = await lerAba(ABAS.confirmacoes);
   return linhas
-    .filter((l) => normalizar(l.nome) === alvo && (fone.length < 8 || digitos(l.whatsapp).slice(-8) === fone))
+    .filter((l) => eDoConvite(c, l.nome, l.whatsapp))
     .map((l) => ({
       id: texto(l.id),
       vai: /^(sim|s|true|1|x|vai|verdadeiro)$/i.test(texto(l.vai)),
@@ -177,4 +180,37 @@ async function resultado(achados: Convidado[]): Promise<ResultadoBusca> {
     };
   }
   return { status: "nao_achou" };
+}
+
+/** Diferença entre quem estava no convite e quem foi confirmado. */
+export type TrocaAcompanhante = {
+  /** Como estava na lista de convidados. */
+  convite: string[];
+  /** Confirmados que não estavam no convite. */
+  entraram: string[];
+  /** Estavam no convite e não foram confirmados. */
+  sairam: string[];
+};
+
+/**
+ * Para cada resposta "vou" de um convite da lista, compara os acompanhantes
+ * confirmados com os do convite. Só entram no resultado as que mudaram.
+ */
+export function trocasDeAcompanhante(
+  respostas: { id: string; name: string; phone: string | null; attending: boolean; companion_names: string | null }[],
+  convidados: Convidado[],
+): Record<string, TrocaAcompanhante> {
+  const trocas: Record<string, TrocaAcompanhante> = {};
+  for (const r of respostas) {
+    if (!r.attending) continue;
+    const c = convidados.find((x) => eDoConvite(x, r.name, r.phone));
+    if (!c || !c.nomesAcompanhantes.length) continue;
+    const confirmados = dividirNomes(r.companion_names);
+    const doConvite = new Set(c.nomesAcompanhantes.map(normalizar));
+    const vieram = new Set(confirmados.map(normalizar));
+    const entraram = confirmados.filter((n) => !doConvite.has(normalizar(n)));
+    const sairam = c.nomesAcompanhantes.filter((n) => !vieram.has(normalizar(n)));
+    if (entraram.length || sairam.length) trocas[r.id] = { convite: c.nomesAcompanhantes, entraram, sairam };
+  }
+  return trocas;
 }
